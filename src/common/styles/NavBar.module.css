@@ -1,0 +1,51 @@
+nav.navbar {
+  width: 80vw;
+  height: 10vmax;
+  position: absolute;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar a {
+  color: var(--primary);
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.navbar.landing a {
+  color: white;
+}
+
+.navbar a:hover {
+  opacity: 0.7;
+}
+
+.login-register {
+  display: flex;
+  grid-gap: 1.5rem;
+}
+
+.login,
+.register {
+  height: 3rem;
+  aspect-ratio: 2/1;
+  border-radius: 0.75rem;
+  font-weight: 700;
+}
+
+.login,
+.register:hover {
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
+}
+
+.register,
+.login:hover {
+  background-color: white;
+  color: var(--primary);
+  border: 2px solid transparent;
+}
