@@ -9,7 +9,7 @@ import Footer from "src/common/components/Footer";
 
 export default function Home() {
   return (
-    <>
+    <main className={styles["main"]}>
       <Head>
         <meta
           name="description"
@@ -17,8 +17,8 @@ export default function Home() {
         />
       </Head>
 
+      <NavBar />
       <section className={styles["banner-container"]}>
-        <NavBar />
         <header className={styles["header"]}>
           <h1 className={styles["title"]}>
             Awesome App
@@ -35,15 +35,7 @@ export default function Home() {
             </a>
           </Link>
         </header>
-        <div className={styles["img"]}>
-          <Image
-            src={"/images/phone.png"}
-            alt="phone"
-            layout="fill"
-            objectFit="contain"
-            priority
-          />
-        </div>
+        <div className={styles["img"]}></div>
       </section>
       <section className={styles["about-container"]}>
         <h1 className={styles["title"]}>
@@ -218,12 +210,12 @@ export default function Home() {
           </div>
         </div>
         <div className={styles["img"]}>
-          <Image
+          {/* <Image
             alt="phone features"
             src={"/images/phone-features.png"}
             layout="fill"
             objectFit="contain"
-          />
+          /> */}
         </div>
       </section>
       <section className={styles["testimony-container"]}>
@@ -284,6 +276,6 @@ export default function Home() {
         </div>
       </section>
       <Footer page="landing" />
-    </>
+    </main>
   );
 }

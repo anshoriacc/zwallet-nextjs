@@ -1,16 +1,12 @@
-.banner-container p,
-.about-container p,
-.partners-container p,
-.features-container p,
-.testimony-container p {
+.main {
+  position: relative;
+}
+
+.main p {
   margin: 0;
 }
 
-.banner-container,
-.about-container,
-.partners-container,
-.features-container,
-.testimony-container {
+.main [class*="-container"] {
   overflow: hidden;
   position: relative;
 }
@@ -21,7 +17,7 @@
 
 .banner-container {
   height: 100vh;
-  padding: 12vmax 10vw 0;
+  padding: calc(4vmax + 3rem) 10vw 0;
   background-image: url("/images/banner.jpg");
   background-size: cover;
   color: white;
@@ -34,6 +30,7 @@
 .banner-container .img {
   width: 100%;
   aspect-ratio: 600/757;
+  content: url("/images/phone.png");
 }
 
 .header {
@@ -155,6 +152,7 @@
 .features-container .img {
   width: 100%;
   aspect-ratio: 1062/2020;
+  content: url("/images/phone1.png");
 }
 
 .features-text {
@@ -215,8 +213,8 @@
   }
 
   .features-container .img {
-    width: 40%;
-    height: 100%;
+    max-width: 40%;
+    aspect-ratio: 1062/2020;
   }
 
   .testimony-container {
@@ -233,7 +231,7 @@
 
   .banner-container .img {
     align-self: flex-end;
-    height: 600px;
+    height: 100%;
     width: auto;
     aspect-ratio: 600/757;
   }
