@@ -105,10 +105,8 @@ function Dashboard({ auth }) {
           <div className={styles["balance-container"]}>
             <div className={styles["left"]}>
               <p>Balance</p>
-              <h1 className={styles["balance"]}>
-                Rp.{userData.resdata.balance}
-              </h1>
-              <p>{userData.resdata.noTelp || "-"}</p>
+              <h1 className={styles["balance"]}>Rp.{20000}</h1>
+              <p>{"-"}</p>
             </div>
             <div className={styles["right"]}>
               <button onClick={() => router.push("/transfer")}>
