@@ -10,6 +10,7 @@ import PageTitle from "src/common/components/PageTitle";
 export default function ChangePassword() {
   const router = useRouter();
   const [passwordShown, setPasswordShown] = useState(false);
+  const [value, setValue] = useState(false);
 
   const togglePassword = () => {
     setPasswordShown(!passwordShown);

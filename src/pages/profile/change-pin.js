@@ -26,7 +26,7 @@ export default function ChangePin() {
           <form className={styles["form"]}>
             <div className={styles["pin"]}>
               <input
-                type="number"
+                type="password"
                 name="pin"
                 placeholder="6 digits pin"
                 minLength="6"
