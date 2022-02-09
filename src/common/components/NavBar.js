@@ -13,12 +13,12 @@ const NavBar = ({ auth }) => {
   // const dispatch = useDispatch();
   const [userData, setUserData] = useState({});
 
-  const data = JSON.parse(
-    JSON.parse(localStorage.getItem("persist:root")).auth
-  ).userData;
+  // const data = JSON.parse(
+  //   JSON.parse(localStorage.getItem("persist:root")).auth
+  // ).userData;
 
   useEffect(() => {
-    getDetailUser(data.token, data.id)
+    getDetailUser(auth.userData.token, auth.userData.id)
       .then((res) => {
         // console.log(res.data.data);
         const resdata = res.data.data;
