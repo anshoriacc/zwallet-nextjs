@@ -46,23 +46,29 @@ function Profile({ auth }) {
             />
           </div>
           <div className={styles["name-type"]}>
-            <p
-              className={styles["name"]}
-            >{`Achmad Anshori`}</p>
+            <p className={styles["name"]}>{`Achmad Anshori`}</p>
             <p className={styles["type"]}>{"-"}</p>
           </div>
-          <div className={styles["link-container"]}>
-            <p>Personal Information</p>
-          </div>
-          <div className={styles["link-container"]}>
-            <p>Change Password</p>
-          </div>
-          <div className={styles["link-container"]}>
-            <p>Change Pin</p>
-          </div>
-          <div className={styles["link-container"]}>
-            <p>Logout</p>
-          </div>
+          <Link href="/profile/info" passHref>
+            <div className={styles["link-container"]}>
+              <p>Personal Information</p>
+            </div>
+          </Link>
+          <Link href="/profile/change-password" passHref>
+            <div className={styles["link-container"]}>
+              <p>Change Password</p>
+            </div>
+          </Link>
+          <Link href="/profile/change-pin" passHref>
+            <div className={styles["link-container"]}>
+              <p>Change Pin</p>
+            </div>
+          </Link>
+          <Link href="/logout" passHref>
+            <div className={styles["link-container"]}>
+              <p>Logout</p>
+            </div>
+          </Link>
         </div>
       </Layout>
     </>
