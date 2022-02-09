@@ -32,3 +32,4 @@ export const resetPassword = (body) => {
   const URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/reset-password`;
   return axios.patch(URL, body);
 };
+

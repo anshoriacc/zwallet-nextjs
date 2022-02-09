@@ -8,7 +8,7 @@ const config = (token) => {
   };
 };
 
-export const getHistory = (token, limit, filter, page) => {
-  const URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/transaction/history?limit=${limit}&filter=${filter}&page=${page}`;
-  return axios.get(URL, config(token));
+export const transfer = (token, body) => {
+  const URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/transaction/transfer`;
+  return axios.get(URL, body, config(token));
 };

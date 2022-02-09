@@ -14,6 +14,11 @@ export const getDetailUser = (token, id) => {
 };
 
 export const getAllUser = (body, token) => {
-  const URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register`;
+  const URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/user?`;
   return axios.post(URL, body, config(token));
+};
+
+export const checkPin = (token, pin) => {
+  const URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/pin?pin=${pin}`;
+  return axios.get(URL, config(token));
 };
