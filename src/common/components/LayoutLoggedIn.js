@@ -55,7 +55,7 @@ function LayoutLoggedIn({ children, auth }) {
     // console.log(auth.userData.token);
     topUp(body, auth.userData.token)
       .then((res) => {
-        toast.success("Top up success, redirecting to payment method.");
+        toast.info("Redirecting to payment page");
         window.open(
           res.data.data.redirectUrl,
           "_blank" // <- This is what makes it open in a new window.
