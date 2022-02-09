@@ -1,28 +1,76 @@
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useState } from "react";
+import { Button, Modal } from "react-bootstrap";
+import { connect, useDispatch } from "react-redux";
 
 import styles from "src/common/styles/LayoutLoggedIn.module.css";
 
 import NavBar from "./NavBar";
 import Footer from "./Footer";
 
-export default function LayoutAuth({ child }) {
+import { topUp } from "src/modules/api/topUp";
+import { logoutAction } from "src/redux/actions/auth";
+
+function LayoutLoggedIn({ children, auth }) {
   const router = useRouter();
+  const dispatch = useDispatch;
   const [active1, setActive1] = useState(false);
   const [active2, setActive2] = useState(false);
   const [shownNav, setShownNav] = useState(false);
+  const [shownLogoutModal, setShownLogoutModal] = useState(false);
+  const [shownTopUpModal, setShownTopUpModal] = useState(false);
 
-  const toggleActive1 = () => {
+  const showTopUpModal = () => {
     setActive1(!active1);
+    setShownTopUpModal(true);
   };
-  const toggleActive2 = () => {
+
+  const hideTopUpModal = () => {
+    setActive1(!active1);
+    setShownTopUpModal(false);
+  };
+
+  const showLogoutModal = () => {
     setActive2(!active2);
+    setShownLogoutModal(true);
+  };
+
+  const hideLogoutModal = () => {
+    setActive2(!active2);
+    setShownLogoutModal(false);
   };
 
   const toggleNav = () => {
     setShownNav(!shownNav);
   };
+
+  const topUpHandler = (e) => {
+    e.preventDefault();
+    // window.location.href = "https://google.com/about";
+    // window.open(
+    //   "https://google.com",
+    //   "_blank" // <- This is what makes it open in a new window.
+    // );
+    const body = {
+      amount: e.target.amount.value,
+    };
+    // console.log(auth.userData.token);
+    topUp(body, auth.userData.token)
+      .then((res) => {
+        window.open(
+          res.data.data.redirectUrl,
+          "_blank" // <- This is what makes it open in a new window.
+        );
+      })
+      .catch();
+    // console.log(body);
+  };
+
+  // const logoutHandler = (e) => {
+  //   e.preventDefault();
+  //   dispatch(logoutAction);
+  // };
 
   return (
     <main className={styles["main"]}>
@@ -71,7 +119,7 @@ export default function LayoutAuth({ child }) {
                   active1 ? styles["active"] : ""
                 }`}
                 title="Top Up"
-                onClick={toggleActive1}
+                onClick={showTopUpModal}
               >
                 <div className={styles["nav-item"]}>
                   <i className={`${styles["nav-icon"]} bi bi-plus-lg`}></i>
@@ -99,7 +147,7 @@ export default function LayoutAuth({ child }) {
                 active2 ? styles["active"] : ""
               }`}
               title="Logout"
-              onClick={toggleActive2}
+              onClick={showLogoutModal}
             >
               <div className={styles["nav-item"]}>
                 <i className={`${styles["nav-icon"]} bi bi-box-arrow-left`}></i>
@@ -108,8 +156,12 @@ export default function LayoutAuth({ child }) {
             </div>
           </div>
         </section>
-        <section className={styles["right"]}>
-          <div className={styles["child"]}>{child}</div>
+        <section
+          className={`${styles["right"]} ${
+            router.pathname !== "/dashboard" ? styles["not-dashboard"] : ""
+          }`}
+        >
+          <div className={styles["child"]}>{children}</div>
         </section>
       </section>
       <Footer />
@@ -136,6 +188,54 @@ export default function LayoutAuth({ child }) {
           <a href="#">Logout</a>
         </div>
       </div>
+      <Modal
+        show={shownLogoutModal}
+        onHide={hideLogoutModal}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Logout</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure want to log out?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={hideLogoutModal}>
+            Cancel
+          </Button>
+          <Button variant="danger" onClick={() => router.push("/logout")}>
+            Logout
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal
+        show={shownTopUpModal}
+        onHide={hideTopUpModal}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Topup</Modal.Title>
+        </Modal.Header>
+        <form onSubmit={topUpHandler}>
+          <Modal.Body>
+            <p>Enter the amount of money, and click submit</p>
+            <input type="text" name="amount"></input>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button type="submit" variant="primary">
+              Submit
+            </Button>
+          </Modal.Footer>
+        </form>
+      </Modal>
     </main>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth,
+  };
+};
+
+export default connect(mapStateToProps)(LayoutLoggedIn);

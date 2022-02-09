@@ -2,7 +2,7 @@ import styles from "src/common/styles/LayoutAuth.module.css";
 
 import NavBar from "src/common/components/NavBar";
 
-export default function LayoutAuth({ child }) {
+export default function LayoutAuth({ children }) {
   return (
     <main className={styles["main"]}>
       <NavBar />
@@ -20,7 +20,7 @@ export default function LayoutAuth({ child }) {
         </p>
       </section>
       <section className={styles["right"]}>
-        <div className={styles["child"]}>{child}</div>
+        <div className={styles["child"]}>{children}</div>
       </section>
     </main>
   );

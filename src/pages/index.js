@@ -6,8 +6,12 @@ import styles from "src/common/styles/Home.module.css";
 
 import NavBar from "src/common/components/NavBar";
 import Footer from "src/common/components/Footer";
+import storage from "redux-persist/lib/storage";
 
 export default function Home() {
+  // const root = JSON.parse(storage.getItem("persist:root"));
+  // console.log(root);
+
   return (
     <main className={styles["main"]}>
       <Head>

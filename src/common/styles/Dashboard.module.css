@@ -1,0 +1,119 @@
+.main-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  grid-gap: 1rem;
+}
+
+.balance-container {
+  background-color: var(--primary);
+  padding: 2rem;
+  border-radius: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  color: #efefefe5;
+  box-shadow: var(--shadow);
+}
+
+.balance {
+  color: white;
+  font-weight: 700;
+}
+
+.balance-container .right {
+  display: flex;
+  flex-direction: column;
+  grid-gap: 1rem;
+  justify-content: center;
+}
+
+.balance-container .right button {
+  background-color: #ffffff4d;
+  border: 1px solid white;
+  border-radius: 0.75rem;
+  padding: 0.5rem 1rem;
+  color: white;
+  font-weight: 700;
+}
+
+.balance-container .right button:hover {
+  opacity: 0.7;
+}
+
+.history-container {
+  flex-grow: 1;
+  background-color: white;
+  box-shadow: var(--shadow);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  grid-gap: 1rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.see-all {
+  text-decoration: none;
+}
+
+.transaction-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.transaction-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+.transaction-item .left {
+  display: flex;
+  grid-gap: 1rem;
+  flex-grow: 1;
+}
+
+.transaction-item .left .img {
+  position: relative;
+  height: 3rem;
+  width: 3rem;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.transaction-amount {
+  font-weight: 700;
+}
+
+.transaction-amount.green {
+  color: var(--green);
+}
+
+.transaction-amount.red {
+  color: var(--red);
+}
+
+.name-type {
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-weight: 700;
+}
+
+.type {
+  color: var(--dark03);
+}

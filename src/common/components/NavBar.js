@@ -1,11 +1,32 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import { connect, useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
 
 import styles from "src/common/styles/NavBar.module.css";
 
-const NavBar = ({ isLoggedIn }) => {
+import { getDetailUser } from "src/modules/api/user";
+
+const NavBar = ({ auth }) => {
   const router = useRouter();
+  // const dispatch = useDispatch();
+  const [userData, setUserData] = useState({});
+
+  const data = JSON.parse(
+    JSON.parse(localStorage.getItem("persist:root")).auth
+  ).userData;
+
+  useEffect(() => {
+    getDetailUser(data.token, data.id)
+      .then((res) => {
+        // console.log(res.data.data);
+        const resdata = res.data.data;
+        setUserData({ ...userData, resdata });
+      })
+      .catch((err) => console.log(err));
+  }, [auth.userData.token]);
+
   return (
     <nav
       className={`${styles["navbar"]} ${
@@ -29,21 +50,23 @@ const NavBar = ({ isLoggedIn }) => {
         <></>
       ) : (
         <div className={styles["nav-right"]}>
-          {isLoggedIn ? (
+          {auth.userData.token ? (
             <>
               <Link href="/profile" passHref>
                 <div className={styles["profile"]}>
                   <div className={styles["img"]}>
                     <Image
                       alt="profile"
-                      src={"/images/robert.png"}
+                      src={userData.image || "/images/default.jpg"}
                       layout="fill"
                       objectFit="contain"
                     />
                   </div>
                   <div>
-                    <p className={styles["name"]}>Robert Chandler</p>
-                    <p className={styles["phone"]}>+62 8139 3877 7946</p>
+                    <p
+                      className={styles["name"]}
+                    >{`${userData.firstName} ${userData.lastName}`}</p>
+                    <p className={styles["phone"]}>{userData.noTelp || "-"}</p>
                   </div>
                   <div className={styles["notification-wrapper"]}>
                     <div className={styles["notification"]}></div>
@@ -67,4 +90,10 @@ const NavBar = ({ isLoggedIn }) => {
   );
 };
 
-export default NavBar;
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth,
+  };
+};
+
+export default connect(mapStateToProps)(NavBar);
