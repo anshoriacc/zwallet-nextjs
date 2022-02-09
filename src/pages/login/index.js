@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { connect, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 import styles from "src/common/styles/Auth.module.css";
 
@@ -45,14 +46,12 @@ function Login(props) {
 
   useEffect(() => {
     if (props.auth.isFulfilled) {
-      // dispatch(
-      //   userDataAction(props.auth.userData.token, props.auth.userData.id)
-      // );
-      // console.log(!props.auth.userData.pin);
+      toast.success('Login success, redirecting to dashboard.');
       if (!props.auth.userData.pin) router.push("/createpin");
       router.push("/dashboard");
     }
     if (props.auth.isRejected) {
+      toast.error("Login error", { autoClose: false });
     }
   }, [props, router, dispatch]);
 

@@ -4,7 +4,8 @@ import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { connect } from "react-redux";
 import { logoutAction } from "src/redux/actions/auth";
-// import styles from "src/common/styles/Dashboard.module.css";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Logout(props) {
   const router = useRouter();
@@ -13,9 +14,12 @@ function Logout(props) {
 
   useEffect(() => {
     if (!props.auth.userData.token) {
+      toast.success("Logout success, redirecting to login page.", {
+        position: "top-right",
+      });
       // router.push("/createpin");
       // // console.log(!props.auth.userData.pin);
-      // if (!props.auth.userData.pin) 
+      // if (!props.auth.userData.pin)
       router.push("/login");
     }
   }, [props, router]);

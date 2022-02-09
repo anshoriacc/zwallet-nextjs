@@ -3,6 +3,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { connect, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import styles from "src/common/styles/LayoutLoggedIn.module.css";
 
@@ -47,30 +49,24 @@ function LayoutLoggedIn({ children, auth }) {
 
   const topUpHandler = (e) => {
     e.preventDefault();
-    // window.location.href = "https://google.com/about";
-    // window.open(
-    //   "https://google.com",
-    //   "_blank" // <- This is what makes it open in a new window.
-    // );
     const body = {
       amount: e.target.amount.value,
     };
     // console.log(auth.userData.token);
     topUp(body, auth.userData.token)
       .then((res) => {
+        toast.success("Top up success, redirecting to payment method.");
         window.open(
           res.data.data.redirectUrl,
           "_blank" // <- This is what makes it open in a new window.
         );
       })
-      .catch();
+      .catch((err) => {
+        toast.error("Top up error.", { autoClose: false });
+        console.log(err);
+      });
     // console.log(body);
   };
-
-  // const logoutHandler = (e) => {
-  //   e.preventDefault();
-  //   dispatch(logoutAction);
-  // };
 
   return (
     <main className={styles["main"]}>
@@ -112,8 +108,6 @@ function LayoutLoggedIn({ children, auth }) {
                   </div>
                 </div>
               </Link>
-              {/* <Link href="/topup" passHref>
-                </Link> */}
               <div
                 className={`${styles["nav-item-container"]} ${
                   active1 ? styles["active"] : ""
@@ -181,11 +175,15 @@ function LayoutLoggedIn({ children, auth }) {
           <Link href="/transfer">
             <a>Transfer</a>
           </Link>
-          <a href="#">Topup</a>
+          <a href="#" onClick={showTopUpModal}>
+            Topup
+          </a>
           <Link href="/profile">
             <a>Profile</a>
           </Link>
-          <a href="#">Logout</a>
+          <a href="#" onClick={showLogoutModal}>
+            Logout
+          </a>
         </div>
       </div>
       <Modal

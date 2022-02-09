@@ -1,6 +1,8 @@
 import Head from "next/head";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import "src/common/styles/globals.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -15,6 +17,19 @@ function MyApp({ Component, pageProps }) {
         <title>Zwallet</title>
         <link rel="icon" href="/icons/icon.png" />
       </Head>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable={false}
+        pauseOnHover
+      />
+
       <Provider store={store}>
         <PersistGate persistor={persistor}>
           <Component {...pageProps} />

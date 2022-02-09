@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { connect } from "react-redux";
+import { Modal, Button } from "react-bootstrap";
 
 import styles from "src/common/styles/Profile.module.css";
 
@@ -15,6 +16,15 @@ function Profile({ auth }) {
   // console.log(auth.userData.token);
   const router = useRouter();
   const [userData, setUserData] = useState({});
+  const [shownLogoutModal, setShownLogoutModal] = useState(false);
+
+  const showLogoutModal = () => {
+    setShownLogoutModal(true);
+  };
+
+  const hideLogoutModal = () => {
+    setShownLogoutModal(false);
+  };
 
   useEffect(() => {
     getDetailUser(auth.userData.token, auth.userData.id)
@@ -64,12 +74,31 @@ function Profile({ auth }) {
               <p>Change Pin</p>
             </div>
           </Link>
-          <Link href="/logout" passHref>
-            <div className={styles["link-container"]}>
-              <p>Logout</p>
-            </div>
-          </Link>
+          {/* <Link href="/logout" passHref>
+          </Link> */}
+          <div className={styles["link-container"]} onClick={showLogoutModal}>
+            <p>Logout</p>
+          </div>
         </div>
+        <Modal
+          show={shownLogoutModal}
+          onHide={hideLogoutModal}
+          backdrop="static"
+          keyboard={false}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Logout</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Are you sure want to log out?</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={hideLogoutModal}>
+              Cancel
+            </Button>
+            <Button variant="danger" onClick={() => router.push("/logout")}>
+              Logout
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </Layout>
     </>
   );

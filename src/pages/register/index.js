@@ -2,6 +2,8 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
 import { useState } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import styles from "src/common/styles/Auth.module.css";
 
@@ -29,10 +31,14 @@ export default function Register() {
 
     register(body)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
+        toast.success("Register success, redirecting to login page.");
         router.push("/login");
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        toast.success("Register error", { autoClose: false });
+        console.error(err);
+      });
   };
 
   return (

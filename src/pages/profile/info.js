@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import toast from "react-toastify";
 
 import styles from "src/common/styles/Profile.module.css";
 
