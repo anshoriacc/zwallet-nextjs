@@ -1,11 +1,15 @@
 import styles from "src/common/styles/LayoutAuth.module.css";
-
-import NavBar from "src/common/components/NavBar";
+import Link from "next/link";
+// import NavBar from "src/common/components/NavBar";
 
 export default function LayoutAuth({ children }) {
   return (
     <main className={styles["main"]}>
-      <NavBar />
+      <nav className={styles["navbar"]}>
+        <Link href="/" passHref>
+          Zwallet
+        </Link>
+      </nav>
       <section className={styles["left"]}>
         <div className={styles["img-container"]}>
           <div className={styles["img1"]}></div>

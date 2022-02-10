@@ -10,10 +10,8 @@ const appReducer = combineReducers({
 
 const rootReducer = (state, action) => {
   if (action.type === ACTION_STRING.authLogout) {
-    // for all keys defined in your persistConfig(s)
     localStorage.removeItem("persist:root");
     state = undefined;
-    return appReducer(state, action);
   }
   return appReducer(state, action);
 };

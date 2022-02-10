@@ -14,15 +14,11 @@ function Logout(props) {
 
   useEffect(() => {
     if (!props.auth.userData.token) {
-      toast.success("Logout success, redirecting to login page.", {
-        position: "top-right",
-      });
-      // router.push("/createpin");
-      // // console.log(!props.auth.userData.pin);
-      // if (!props.auth.userData.pin)
+      toast.success("Logout success, redirecting to login page.");
       router.push("/login");
     }
-  }, [props, router]);
+    console.log("logout");
+  });
 
   return <></>;
 }

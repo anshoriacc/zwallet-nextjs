@@ -1,5 +1,3 @@
-// import { ActionType } from "redux-promise-middleware";
-
 import { ACTION_STRING } from "src/redux/actions/actionsString";
 
 const initialState = {
@@ -14,21 +12,23 @@ const initialState = {
 };
 
 const userReducer = (prevState = initialState, action) => {
-  console.log("inside userReducer");
-  const { userData } = ACTION_STRING;
-
   switch (action.type) {
-    case userData:
-      const data = action.payload.data;
-      return {
-        ...prevState,
+    case ACTION_STRING.userData:
+      const data = action.payload;
+      const userData = {
+        ...prevState.userData,
         firstName: data.data.firstName,
         lastName: data.data.lastName,
         email: data.data.email,
         image: data.data.image,
         noTelp: data.data.noTelp,
-        balanca: data.data.balance,
+        balance: data.data.balance,
       };
+      return {
+        ...prevState,
+        userData,
+      };
+
     default:
       return prevState;
   }

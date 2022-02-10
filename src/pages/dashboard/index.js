@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import Image from "next/image";
 import { Button, Modal } from "react-bootstrap";
 
@@ -43,7 +43,7 @@ function Card({ data }) {
   );
 }
 
-function Dashboard({ auth }) {
+function Dashboard(props) {
   const [historyData, setHistoryData] = useState([]);
   // const [paginationData, setPaginationData] = useState({});
   const [userData, setUserData] = useState({});
@@ -55,18 +55,18 @@ function Dashboard({ auth }) {
   filter = router.query.filter || "WEEK";
 
   useEffect(() => {
-    getHistory(auth.userData.token, 3, filter, page)
+    getHistory(props.auth.userData.token, 3, filter, page)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setHistoryData(res.data.data);
       })
       .catch((err) => {
         console.log(err);
       });
 
-    getDetailUser(auth.userData.token, auth.userData.id)
+    getDetailUser(props.auth.userData.token, props.auth.userData.id)
       .then((res) => {
-        console.log(res.data.data);
+        // console.log(res.data.data);
         const resdata = res.data.data;
         setUserData({ ...userData, resdata });
       })
@@ -89,7 +89,7 @@ function Dashboard({ auth }) {
       amount: e.target.amount.value,
     };
 
-    topUp(body, auth.userData.token)
+    topUp(body, props.auth.userData.token)
       .then((res) => {
         window.open(res.data.data.redirectUrl, "_blank");
       })

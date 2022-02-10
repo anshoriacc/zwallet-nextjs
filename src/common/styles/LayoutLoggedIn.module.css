@@ -30,7 +30,7 @@
 }
 
 .nav-item-container {
-  padding: 0 1rem;
+  padding: 0 calc(1rem + 5px) 0 1rem;
   cursor: pointer;
   border-left: 5px solid transparent;
 }

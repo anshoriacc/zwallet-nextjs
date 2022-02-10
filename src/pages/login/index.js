@@ -11,13 +11,8 @@ import Layout from "src/common/components/LayoutAuth";
 import PageTitle from "src/common/components/PageTitle";
 
 import { loginAction } from "src/redux/actions/auth";
-import { userDataAction } from "src/redux/actions/user";
-
-// function LoginComponent(props) {
-//   console.log(props);
-
-//   return <></>;
-// }
+import { updateUserData, userDataAction } from "src/redux/actions/user";
+import { getDetailUser } from "src/modules/api/user";
 
 function Login(props) {
   const router = useRouter();
@@ -46,14 +41,20 @@ function Login(props) {
 
   useEffect(() => {
     if (props.auth.isFulfilled) {
-      toast.success('Login success, redirecting to dashboard.');
+      toast.success("Login success, redirecting to dashboard.");
+      getDetailUser(props.auth.userData.token, props.auth.userData.id)
+        .then((res) => {
+          console.log(res.data.data);
+          dispatch(updateUserData(res.data.data));
+        })
+        .catch((err) => console.log(err));
       if (!props.auth.userData.pin) router.push("/createpin");
       router.push("/dashboard");
     }
     if (props.auth.isRejected) {
       toast.error("Login error", { autoClose: false });
     }
-  }, [props, router, dispatch]);
+  }, [props, router]);
 
   return (
     <>
@@ -122,29 +123,3 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(Login);
-
-// export async function getServerSideProps() {
-//   // console.log("server", process.env.URL_BACKEND);
-//   return {
-//     props: {
-//       url: process.env.NEXT_PUBLIC_BACKEND_URL,
-//     },
-//   };
-// }
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     loginDispatch: (body) => {
-//       dispatch(loginAction(body));
-//     },
-//   };
-// };
-
-// export async function getServerSideProps() {
-//   // console.log("server", process.env.URL_BACKEND);
-//   return {
-//     props: {
-//       url: process.env.NEXT_PUBLIC_BACKEND_URL,
-//     },
-//   };
-// }

@@ -4,7 +4,6 @@ import { ACTION_STRING } from "src/redux/actions/actionsString";
 
 const initialState = {
   userData: { token: "", id: null, pin: null },
-
   isPending: false,
   isFulfilled: false,
   isRejected: false,
@@ -44,7 +43,7 @@ const authReducer = (prevState = initialState, action) => {
         err,
       };
     default:
-      return initialState;
+      return prevState;
   }
 };
 

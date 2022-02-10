@@ -4,14 +4,9 @@ import Link from "next/link";
 
 import styles from "src/common/styles/Home.module.css";
 
-import NavBar from "src/common/components/NavBar";
 import Footer from "src/common/components/Footer";
-import storage from "redux-persist/lib/storage";
 
 export default function Home() {
-  // const root = JSON.parse(storage.getItem("persist:root"));
-  // console.log(root);
-
   return (
     <main className={styles["main"]}>
       <Head>
@@ -21,7 +16,19 @@ export default function Home() {
         />
       </Head>
 
-      <NavBar />
+      <nav className={`${styles["navbar"]}`}>
+        <Link href="/" passHref>
+          Zwallet
+        </Link>
+        <div className={styles["nav-right"]}>
+          <Link href="/login" passHref>
+            <button className={styles["login"]}>Login</button>
+          </Link>
+          <Link href="/register" passHref>
+            <button className={styles["register"]}>Register</button>
+          </Link>
+        </div>
+      </nav>
       <section className={styles["banner-container"]}>
         <header className={styles["header"]}>
           <h1 className={styles["title"]}>
