@@ -21,6 +21,10 @@ body {
   color: var(--dark) !important;
 }
 
+h1 {
+  font-size: calc(1.5rem + 2vw) !important;
+}
+
 a {
   color: inherit;
   text-decoration: none;
