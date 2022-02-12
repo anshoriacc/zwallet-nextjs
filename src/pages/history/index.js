@@ -51,7 +51,7 @@ function History(props) {
   filter = router.query.filter || "WEEK";
 
   useEffect(() => {
-    getHistory(props.token, 8, filter, page)
+    getHistory(props.token, 7, filter, page)
       .then((res) => {
         console.log(filter, res);
         setHistoryData(res.data.data);

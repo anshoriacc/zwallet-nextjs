@@ -53,7 +53,7 @@ function LayoutLoggedIn({ children }, props) {
       amount: e.target.amount.value,
     };
     // console.log(auth.userData.token);
-    topUp(body, auth.userData.token)
+    topUp(body, props.auth.userData.token)
       .then((res) => {
         toast.info("Redirecting to payment page");
         window.open(
