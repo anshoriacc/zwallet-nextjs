@@ -10,5 +10,5 @@ const config = (token) => {
 
 export const transfer = (token, body) => {
   const URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/transaction/transfer`;
-  return axios.get(URL, body, config(token));
+  return axios.post(URL, body, config(token));
 };

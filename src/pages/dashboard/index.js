@@ -4,12 +4,14 @@ import { useRouter } from "next/router";
 import { connect, useDispatch } from "react-redux";
 import Image from "next/image";
 import { Button, Modal } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 import styles from "src/common/styles/Dashboard.module.css";
 
 import Layout from "src/common/components/LayoutLoggedIn";
 import PageTitle from "src/common/components/PageTitle";
 
+import currencyPeriod from "src/modules/helpers/currencyPeriod";
 import { getHistory } from "src/modules/api/history";
 import { topUp } from "src/modules/api/topUp";
 import { getDetailUser } from "src/modules/api/user";
@@ -20,7 +22,7 @@ function Card({ data }) {
       <div className={styles["left"]}>
         <div className={styles["img"]}>
           <Image
-            src={data.image || "/images/default.jpg"}
+            src={"/images/default.jpg"}
             placeholder={"empty"}
             alt="profile"
             layout="fill"
@@ -37,41 +39,37 @@ function Card({ data }) {
           data.type === "topup" ? styles["green"] : styles["red"]
         }`}
       >
-        {data.type === "topup" ? "+" : "-"}Rp.{data.amount}
+        {data.type === "topup" ? "+" : "-"} Rp. {currencyPeriod(data.amount)}
       </div>
     </div>
   );
 }
 
 function Dashboard(props) {
+  const dispatch = useDispatch();
   const [historyData, setHistoryData] = useState([]);
-  // const [paginationData, setPaginationData] = useState({});
   const [userData, setUserData] = useState({});
   const router = useRouter();
   let page, filter;
-  // if (!router.query.page)
-  // if (!router.query.filter)
   page = router.query.page || 1;
   filter = router.query.filter || "WEEK";
 
   useEffect(() => {
-    getHistory(props.auth.userData.token, 3, filter, page)
+    getHistory(props.token, 3, filter, page)
       .then((res) => {
-        // console.log(res);
         setHistoryData(res.data.data);
       })
       .catch((err) => {
         console.log(err);
       });
 
-    getDetailUser(props.auth.userData.token, props.auth.userData.id)
+    getDetailUser(props.token, props.id)
       .then((res) => {
-        // console.log(res.data.data);
-        const resdata = res.data.data;
-        setUserData({ ...userData, resdata });
+        // const resdata = res.data.data;
+        setUserData(res.data.data);
       })
       .catch((err) => console.log(err));
-  }, []);
+  });
 
   const [shownTopUpModal, setShownTopUpModal] = useState(false);
 
@@ -88,12 +86,25 @@ function Dashboard(props) {
     const body = {
       amount: e.target.amount.value,
     };
-
-    topUp(body, props.auth.userData.token)
+    // console.log(auth.userData.token);
+    topUp(body, props.token)
       .then((res) => {
-        window.open(res.data.data.redirectUrl, "_blank");
+        toast.info("Redirecting to payment page");
+        window.open(
+          res.data.data.redirectUrl,
+          "_blank" // <- This is what makes it open in a new window.
+        );
+        getDetailUser(props.token, props.id)
+          .then((res) => {
+            dispatch(updateUserData(res.data.data));
+          })
+          .catch((err) => console.log(err));
+        router.push("/dashboard");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        toast.error("Top up error.", { autoClose: false });
+        console.log(err);
+      });
   };
 
   return (
@@ -105,8 +116,13 @@ function Dashboard(props) {
           <div className={styles["balance-container"]}>
             <div className={styles["left"]}>
               <p>Balance</p>
-              <h1 className={styles["balance"]}>Rp.{20000}</h1>
-              <p>{"-"}</p>
+              <h1 className={styles["balance"]}>
+                Rp.{" "}
+                {userData.balance
+                  ? currencyPeriod(userData.balance)
+                  : currencyPeriod(props.userData.balance)}
+              </h1>
+              <p>{userData.noTelp || props.userData.noTelp || "-"}</p>
             </div>
             <div className={styles["right"]}>
               <button onClick={() => router.push("/transfer")}>
@@ -120,7 +136,7 @@ function Dashboard(props) {
           <div className={styles["history-container"]}>
             <div className={styles["header"]}>
               <p className={styles["title"]}>Transaction History</p>
-              <Link href="/dashboard/history">
+              <Link href="/history">
                 <a className={styles["see-all"]}>See all</a>
               </Link>
             </div>
@@ -158,7 +174,9 @@ function Dashboard(props) {
 
 const mapStateToProps = (state) => {
   return {
-    auth: state.auth,
+    id: state.auth.userData.id,
+    token: state.auth.userData.token,
+    userData: state.user.userData,
   };
 };
 

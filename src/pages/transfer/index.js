@@ -13,7 +13,7 @@ import { getAllUser } from "src/modules/api/user";
 
 function Card({ data }) {
   return (
-    <>
+    <Link href={`/transfer/amount?receiver=${data.id}`} passHref>
       <div className={styles["contact-item"]}>
         <div className={styles["img"]}>
           <Image
@@ -24,70 +24,32 @@ function Card({ data }) {
             objectFit="cover"
           />
         </div>
-        <div className={styles["name-type"]}>
-          <p className={styles["name"]}>Momo Taro</p>
-          <p className={styles["type"]}>+62 812-4343-6731</p>
+        <div className={styles["name-phone"]}>
+          <p
+            className={styles["name"]}
+          >{`${data.firstName} ${data.lastName}`}</p>
+          <p className={styles["phone"]}>{data.noTelp | "-"}</p>
         </div>
         <div className={styles["left"]}></div>
       </div>
-      <div className={styles["contact-item"]}>
-        <div className={styles["img"]}>
-          <Image
-            src={"/images/default.jpg"}
-            placeholder={"empty"}
-            alt="profile"
-            layout="fill"
-            objectFit="cover"
-          />
-        </div>
-        <div className={styles["name-type"]}>
-          <p className={styles["name"]}>Momo Taro</p>
-          <p className={styles["type"]}>+62 812-4343-6731</p>
-        </div>
-        <div className={styles["left"]}></div>
-      </div>
-      <div className={styles["contact-item"]}>
-        <div className={styles["img"]}>
-          <Image
-            src={"/images/default.jpg"}
-            placeholder={"empty"}
-            alt="profile"
-            layout="fill"
-            objectFit="cover"
-          />
-        </div>
-        <div className={styles["name-type"]}>
-          <p className={styles["name"]}>Momo Taro</p>
-          <p className={styles["type"]}>+62 812-4343-6731</p>
-        </div>
-        <div className={styles["left"]}></div>
-      </div>
-      <div className={styles["contact-item"]}>
-        <div className={styles["img"]}>
-          <Image
-            src={"/images/default.jpg"}
-            placeholder={"empty"}
-            alt="profile"
-            layout="fill"
-            objectFit="cover"
-          />
-        </div>
-        <div className={styles["name-type"]}>
-          <p className={styles["name"]}>Momo Taro</p>
-          <p className={styles["type"]}>+62 812-4343-6731</p>
-        </div>
-        <div className={styles["left"]}></div>
-      </div>
-    </>
+    </Link>
   );
 }
 
-function Transfer() {
+function Transfer(props) {
   const [userData, setUserData] = useState([]);
+  const [paginationData, setPaginationData] = useState({});
   const router = useRouter();
 
   useEffect(() => {
-    getAllUser;
+    getAllUser(props.token, 5)
+      .then((res) => {
+        setUserData(res.data.data);
+        const { pagination } = res.data;
+        setPaginationData(pagination);
+        // console.log(res);
+      })
+      .catch((err) => console.log(err));
   });
 
   return (
@@ -95,14 +57,29 @@ function Transfer() {
       <PageTitle title="Transfer" />
 
       <Layout>
-        <div className={styles["header"]}>
-          <p className={styles["title"]}>Search Receiver</p>
-          <input className={styles["search"]} placeholder="Search..."></input>
-        </div>
-        <div className={styles["contact-list"]}>
-          <Card />
-          {/* {userData.length > 0 &&
-            userData.map((data, idx) => <Card data={data} key={idx} />)} */}
+        <div className={styles["main"]}>
+          <div className={styles["content"]}>
+            <p className={styles["title"]}>Search Receiver</p>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                router.push(`/transfer?q=${e.target.q.value}`);
+              }}
+            >
+              <input
+                name="q"
+                className={styles["search"]}
+                placeholder="Search..."
+              ></input>
+            </form>
+            <div className={styles["contact-list"]}>
+              {/* <Card /> */}
+              {userData &&
+                userData.length > 0 &&
+                userData.map((data, idx) => <Card data={data} key={idx} />)}
+            </div>
+          </div>
+          <div className={styles["pagination"]}></div>
         </div>
       </Layout>
     </>
@@ -111,7 +88,9 @@ function Transfer() {
 
 const mapStateToProps = (state) => {
   return {
-    auth: state.auth,
+    id: state.auth.userData.id,
+    token: state.auth.userData.token,
+    userData: state.user.userData,
   };
 };
 

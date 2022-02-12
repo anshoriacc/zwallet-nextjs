@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { connect } from "react-redux";
 
-import styles from "src/common/styles/Dashboard.module.css";
+import styles from "src/common/styles/History.module.css";
 
 import Layout from "src/common/components/LayoutLoggedIn";
 import PageTitle from "src/common/components/PageTitle";
@@ -73,7 +73,17 @@ function History({ auth }) {
           <select
             name="filter"
             onChange={(e) =>
-              router.push(`/dashboard/history?filter=${e.target.value}`)
+              //   router.push(`/history?filter=${e.target.value}`)
+              //   router.push(
+              //     `/history${
+              //       e.target.value === "WEEK" ? "" : `?filter=${e.target.value}`
+              //     }`
+              //   )
+              router.push(
+                e.target.value === "WEEK"
+                  ? "/history"
+                  : `/history?filter=${e.target.value}`
+              )
             }
           >
             <option selected disabled hidden>

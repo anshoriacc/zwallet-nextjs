@@ -14,7 +14,7 @@ import Footer from "./Footer";
 import { topUp } from "src/modules/api/topUp";
 import { logoutAction } from "src/redux/actions/auth";
 
-function LayoutLoggedIn({ children, auth }) {
+function LayoutLoggedIn({ children }, props) {
   const router = useRouter();
   const dispatch = useDispatch;
   const [active1, setActive1] = useState(false);
@@ -60,6 +60,12 @@ function LayoutLoggedIn({ children, auth }) {
           res.data.data.redirectUrl,
           "_blank" // <- This is what makes it open in a new window.
         );
+        getDetailUser(props.auth.userData.token, props.auth.userData.id)
+          .then((res) => {
+            dispatch(updateUserData(res.data.data));
+          })
+          .catch((err) => console.log(err));
+        router.push("/dashboard");
       })
       .catch((err) => {
         toast.error("Top up error.", { autoClose: false });
@@ -120,6 +126,21 @@ function LayoutLoggedIn({ children, auth }) {
                   <p className={styles["nav-label"]}>Top Up</p>
                 </div>
               </div>
+              <Link href="/history" passHref>
+                <div
+                  className={`${styles["nav-item-container"]} ${
+                    router.pathname.startsWith("/history")
+                      ? styles["active"]
+                      : ""
+                  }`}
+                  title="History"
+                >
+                  <div className={styles["nav-item"]}>
+                    <i className={`${styles["nav-icon"]} bi bi-clock-history`}></i>
+                    <p className={styles["nav-label"]}>History</p>
+                  </div>
+                </div>
+              </Link>
               <Link href="/profile" passHref>
                 <div
                   className={`${styles["nav-item-container"]} ${

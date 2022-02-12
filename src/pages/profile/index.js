@@ -12,7 +12,7 @@ import PageTitle from "src/common/components/PageTitle";
 
 import { getDetailUser } from "src/modules/api/user";
 
-function Profile({ auth }) {
+function Profile(props) {
   // console.log(auth.userData.token);
   const router = useRouter();
   const [userData, setUserData] = useState({});
@@ -26,17 +26,17 @@ function Profile({ auth }) {
     setShownLogoutModal(false);
   };
 
-  useEffect(() => {
-    getDetailUser(auth.userData.token, auth.userData.id)
-      .then((res) => {
-        const data = res.data.data;
-        setUserData({ ...userData, data });
-        // console.log(userData);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  // useEffect(() => {
+  //   getDetailUser(auth.userData.token, auth.userData.id)
+  //     .then((res) => {
+  //       const data = res.data.data;
+  //       setUserData({ ...userData, data });
+  //       // console.log(userData);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
 
   // console.log();
 
@@ -56,8 +56,10 @@ function Profile({ auth }) {
             />
           </div>
           <div className={styles["name-type"]}>
-            <p className={styles["name"]}>{`Achmad Anshori`}</p>
-            <p className={styles["type"]}>{"-"}</p>
+            <p
+              className={styles["name"]}
+            >{`${props.userData.firstName} ${props.userData.lastName}`}</p>
+            <p className={styles["type"]}>{props.userData.noTelp || "-"}</p>
           </div>
           <Link href="/profile/info" passHref>
             <div className={styles["link-container"]}>
@@ -74,8 +76,6 @@ function Profile({ auth }) {
               <p>Change Pin</p>
             </div>
           </Link>
-          {/* <Link href="/logout" passHref>
-          </Link> */}
           <div className={styles["link-container"]} onClick={showLogoutModal}>
             <p>Logout</p>
           </div>
@@ -106,7 +106,9 @@ function Profile({ auth }) {
 
 const mapStateToProps = (state) => {
   return {
-    auth: state.auth,
+    id: state.auth.userData.id,
+    token: state.auth.userData.token,
+    userData: state.user.userData,
   };
 };
 

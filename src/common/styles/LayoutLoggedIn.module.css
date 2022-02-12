@@ -13,7 +13,7 @@
 .main-container {
   position: relative;
   padding: 2vmax 10vw;
-  height: calc(100vh - 8vmax - 8.5rem);
+  height: calc(100vh - 4vmax - 3rem);
   display: grid;
   grid-template-columns: 1fr;
 }
@@ -142,7 +142,7 @@
 
 @media (min-width: 576px) {
   .main-container {
-    height: calc(100vh - 8vmax - 6rem);
+    /* height: calc(100vh - 8vmax - 6rem); */
     grid-template-columns: auto 1fr;
     gap: 1rem;
   }
@@ -167,7 +167,7 @@
 
 @media (min-width: 768px) {
   .main-container {
-    height: calc(100vh - 8vmax - 4.5rem);
+    /* height: calc(100vh - 8vmax - 4.5rem); */
   }
 
   .nav-label {

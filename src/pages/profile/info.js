@@ -2,13 +2,14 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import toast from "react-toastify";
+import { connect } from "react-redux";
 
 import styles from "src/common/styles/Profile.module.css";
 
 import Layout from "src/common/components/LayoutLoggedIn";
 import PageTitle from "src/common/components/PageTitle";
 
-export default function PersonalInfo() {
+function PersonalInfo(props) {
   const router = useRouter();
   console.log(router);
   return (
@@ -26,20 +27,22 @@ export default function PersonalInfo() {
           </p>
           <div className={styles["item-container"]}>
             <p className={styles["info-label"]}>First Name</p>
-            <p className={styles["info-value"]}>Robert</p>
+            <p className={styles["info-value"]}>{props.userData.firstName}</p>
           </div>
           <div className={styles["item-container"]}>
             <p className={styles["info-label"]}>Last Name</p>
-            <p className={styles["info-value"]}>Chandler</p>
+            <p className={styles["info-value"]}>{props.userData.lastName}</p>
           </div>
           <div className={styles["item-container"]}>
             <p className={styles["info-label"]}>Verified E-mail</p>
-            <p className={styles["info-value"]}>pewdiepie@gmail.com</p>
+            <p className={styles["info-value"]}>{props.userData.email}</p>
           </div>
           <div className={`${styles["item-container"]} ${styles["phone"]}`}>
             <div>
               <p className={styles["info-label"]}>Phone Number</p>
-              <p className={styles["info-value"]}>+62 813-9387-7946</p>
+              <p className={styles["info-value"]}>
+                {props.userData.noTelp || "-"}
+              </p>
             </div>
             <Link href="/profile/manage-phone">
               <a>Manage</a>
@@ -50,3 +53,13 @@ export default function PersonalInfo() {
     </>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    id: state.auth.userData.id,
+    token: state.auth.userData.token,
+    userData: state.user.userData,
+  };
+};
+
+export default connect(mapStateToProps)(PersonalInfo);

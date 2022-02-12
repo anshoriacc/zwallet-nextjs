@@ -1,24 +1,35 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { connect } from "react-redux";
 
-import styles from "src/common/styles/Dashboard.module.css";
+import styles from "src/common/styles/Transfer.module.css";
 
 import Layout from "src/common/components/LayoutLoggedIn";
 import PageTitle from "src/common/components/PageTitle";
 
-function TransferStatusComponent() {
-  return <></>;
-}
-
-export default function TransferStatus() {
+function TransferStatus(props) {
   const router = useRouter();
-  console.log(router);
+  console.log(props);
   return (
     <>
       <PageTitle title="Transfer Status" />
 
-      <Layout child={TransferStatusComponent()} />
+      <Layout>
+        <div className={styles["main"]}></div>
+      </Layout>
     </>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    id: state.auth.userData.id,
+    token: state.auth.userData.token,
+    userData: state.user.userData,
+    transferData: state.transfer.transferData,
+    transferResult: state.transfer.transferResult,
+  };
+};
+
+export default connect(mapStateToProps)(TransferStatus);

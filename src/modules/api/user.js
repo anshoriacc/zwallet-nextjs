@@ -13,9 +13,9 @@ export const getDetailUser = (token, id) => {
   return axios.get(URL, config(token));
 };
 
-export const getAllUser = (body, token) => {
-  const URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/user?`;
-  return axios.get(URL, body, config(token));
+export const getAllUser = (token, page) => {
+  const URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/user?limit=4&sort=firstName%20ASC&page=${page}`;
+  return axios.get(URL, config(token));
 };
 
 export const checkPin = (token, pin) => {

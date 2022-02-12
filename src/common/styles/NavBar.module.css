@@ -92,7 +92,7 @@
 }
 
 .profile:hover {
-  background-color: #0000001a;
+  background-color: #0000000d;
 }
 
 .name {
@@ -116,7 +116,7 @@
 }
 
 .notification-wrapper:hover {
-  background-color: #ffffff1a;
+  background-color: #0000000d;
 }
 
 .navbar.landing .notification {

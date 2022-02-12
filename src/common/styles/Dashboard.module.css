@@ -58,6 +58,14 @@
   align-items: center;
 }
 
+.header select {
+  height: 2.25rem;
+  padding: 0 0.5rem;
+  border-radius: 0.75rem;
+  border: none;
+  background-color: var(--dark01);
+}
+
 .title {
   font-size: 1.5rem;
   font-weight: 700;

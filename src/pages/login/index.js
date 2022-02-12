@@ -44,7 +44,6 @@ function Login(props) {
       toast.success("Login success, redirecting to dashboard.");
       getDetailUser(props.auth.userData.token, props.auth.userData.id)
         .then((res) => {
-          console.log(res.data.data);
           dispatch(updateUserData(res.data.data));
         })
         .catch((err) => console.log(err));
@@ -54,7 +53,7 @@ function Login(props) {
     if (props.auth.isRejected) {
       toast.error("Login error", { autoClose: false });
     }
-  }, [props, router]);
+  });
 
   return (
     <>

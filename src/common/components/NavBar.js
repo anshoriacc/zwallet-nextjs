@@ -8,23 +8,23 @@ import styles from "src/common/styles/NavBar.module.css";
 
 import { getDetailUser } from "src/modules/api/user";
 
-const NavBar = ({ auth }) => {
+const NavBar = (props) => {
   const router = useRouter();
   // const dispatch = useDispatch();
   const [userData, setUserData] = useState({});
 
-  useEffect(() => {
-    getDetailUser(auth.userData.token, auth.userData.id)
-      .then((res) => {
-        const resdata = res.data.data;
-        setUserData({ ...userData, resdata });
-      })
-      .catch((err) => console.log(err));
-  }, [auth.userData.token]);
+  // useEffect(() => {
+  //   getDetailUser(auth.userData.token, auth.userData.id)
+  //     .then((res) => {
+  //       const resdata = res.data.data;
+  //       setUserData({ ...userData, resdata });
+  //     })
+  //     .catch((err) => console.log(err));
+  // }, [auth.userData.token]);
 
   return (
     <nav className={`${styles["navbar"]} `}>
-      <Link href="/" passHref>
+      <Link href="/dashboard" passHref>
         Zwallet
       </Link>
       <div className={styles["nav-right"]}>
@@ -33,7 +33,7 @@ const NavBar = ({ auth }) => {
             <div className={styles["img"]}>
               <Image
                 alt="profile"
-                src={userData.image || "/images/default.jpg"}
+                src={"/images/default.jpg"}
                 layout="fill"
                 objectFit="contain"
               />
@@ -41,8 +41,8 @@ const NavBar = ({ auth }) => {
             <div>
               <p
                 className={styles["name"]}
-              >{`${userData.firstName} ${userData.lastName}`}</p>
-              <p className={styles["phone"]}>{userData.noTelp || "-"}</p>
+              >{`${props.userData.firstName} ${props.userData.lastName}`}</p>
+              <p className={styles["phone"]}>{props.userData.noTelp || "-"}</p>
             </div>
             <div className={styles["notification-wrapper"]}>
               <div className={styles["notification"]}></div>
@@ -56,7 +56,9 @@ const NavBar = ({ auth }) => {
 
 const mapStateToProps = (state) => {
   return {
-    auth: state.auth,
+    id: state.auth.userData.id,
+    token: state.auth.userData.token,
+    userData: state.user.userData,
   };
 };
 
