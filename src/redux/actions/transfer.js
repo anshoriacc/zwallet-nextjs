@@ -14,3 +14,10 @@ export const transferAction = (token, body) => {
     payload: transfer(token, body),
   };
 };
+
+export const resetTransferAction = () => {
+  return {
+    type: ACTION_STRING.transferReset,
+    // payload: transfer(token, body),
+  };
+};

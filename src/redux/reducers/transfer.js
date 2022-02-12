@@ -83,6 +83,9 @@ const transferReducer = (prevState = initialState, action) => {
         transferResult,
       };
 
+    case `${ACTION_STRING.transferReset}`:
+      return initialState;
+
     default:
       return prevState;
   }

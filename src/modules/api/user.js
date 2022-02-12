@@ -13,11 +13,6 @@ export const getDetailUser = (token, id) => {
   return axios.get(URL, config(token));
 };
 
-export const getAllUser = (token, page) => {
-  const URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/user?limit=4&sort=firstName%20ASC&page=${page}`;
-  return axios.get(URL, config(token));
-};
-
 export const checkPin = (token, pin) => {
   const URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/pin?pin=${pin}`;
   return axios.get(URL, config(token));

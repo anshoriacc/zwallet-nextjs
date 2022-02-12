@@ -4,6 +4,7 @@ export const ACTION_STRING = {
   userData: "USER_DATA",
   transferData: "TRANSFER_DATA",
   transferResult: "TRANSFER",
+  transferReset: "TRANSFER_RESET",
 
   pending: "_PENDING",
   fulfilled: "_FULFILLED",

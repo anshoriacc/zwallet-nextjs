@@ -13,6 +13,7 @@ import PageTitle from "src/common/components/PageTitle";
 import currencyPeriod from "src/modules/helpers/currencyPeriod";
 import { transferAction } from "src/redux/actions/transfer";
 import { getDetailUser } from "src/modules/api/user";
+import { updateUserData } from "src/redux/actions/user";
 
 function TransferConfirmation(props) {
   const router = useRouter();

@@ -15,6 +15,7 @@ import currencyPeriod from "src/modules/helpers/currencyPeriod";
 import { getHistory } from "src/modules/api/history";
 import { topUp } from "src/modules/api/topUp";
 import { getDetailUser } from "src/modules/api/user";
+import { resetTransferAction } from "src/redux/actions/transfer";
 
 function Card({ data }) {
   return (
@@ -55,21 +56,26 @@ function Dashboard(props) {
   filter = router.query.filter || "WEEK";
 
   useEffect(() => {
-    getHistory(props.token, 3, filter, page)
-      .then((res) => {
-        setHistoryData(res.data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (historyData.length === 0) {
+      getHistory(props.token, 3, filter, page)
+        .then((res) => {
+          setHistoryData(res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
 
     getDetailUser(props.token, props.id)
       .then((res) => {
-        // const resdata = res.data.data;
         setUserData(res.data.data);
       })
       .catch((err) => console.log(err));
   });
+
+  useEffect(() => {
+    dispatch(resetTransferAction());
+  }, []);
 
   const [shownTopUpModal, setShownTopUpModal] = useState(false);
 

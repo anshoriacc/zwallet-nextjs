@@ -9,7 +9,7 @@ import styles from "src/common/styles/Transfer.module.css";
 import Layout from "src/common/components/LayoutLoggedIn";
 import PageTitle from "src/common/components/PageTitle";
 
-import { getAllUser } from "src/modules/api/user";
+import { getAllUser } from "src/modules/api/transfer";
 
 function Card({ data }) {
   return (
@@ -30,7 +30,6 @@ function Card({ data }) {
           >{`${data.firstName} ${data.lastName}`}</p>
           <p className={styles["phone"]}>{data.noTelp | "-"}</p>
         </div>
-        <div className={styles["left"]}></div>
       </div>
     </Link>
   );
@@ -42,15 +41,14 @@ function Transfer(props) {
   const router = useRouter();
 
   useEffect(() => {
-    getAllUser(props.token, 5)
+    getAllUser(props.token, 6)
       .then((res) => {
         setUserData(res.data.data);
         const { pagination } = res.data;
         setPaginationData(pagination);
-        // console.log(res);
       })
       .catch((err) => console.log(err));
-  });
+  }, []);
 
   return (
     <>

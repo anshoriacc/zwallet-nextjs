@@ -11,6 +11,7 @@ import PageTitle from "src/common/components/PageTitle";
 
 import { getDetailUser } from "src/modules/api/user";
 import { inputTransferData } from "src/redux/actions/transfer";
+import currencyPeriod from "src/modules/helpers/currencyPeriod";
 
 function TransferAmount(props) {
   const router = useRouter();
@@ -85,7 +86,9 @@ function TransferAmount(props) {
               autoComplete="off"
               className={styles["input-amount"]}
             ></input>
-            <p className={styles["balance"]}>{`Rp. 120.000 available`}</p>
+            <p className={styles["balance"]}>{`Rp. ${currencyPeriod(
+              props.userData.balance
+            )} available`}</p>
             <input
               type="text"
               name="notes"
@@ -108,6 +111,7 @@ const mapStateToProps = (state) => {
   return {
     id: state.auth.userData.id,
     token: state.auth.userData.token,
+    userData: state.user.userData,
     transferData: state.transfer.transferData,
   };
 };

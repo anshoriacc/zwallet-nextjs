@@ -40,7 +40,7 @@ function Card({ data }) {
   );
 }
 
-function History({ auth }) {
+function History(props) {
   const [historyData, setHistoryData] = useState([]);
   const [paginationData, setPaginationData] = useState({});
   const router = useRouter();
@@ -51,7 +51,7 @@ function History({ auth }) {
   filter = router.query.filter || "WEEK";
 
   useEffect(() => {
-    getHistory(auth.userData.token, 6, filter, page)
+    getHistory(props.token, 8, filter, page)
       .then((res) => {
         console.log(filter, res);
         setHistoryData(res.data.data);
@@ -61,42 +61,38 @@ function History({ auth }) {
       .catch((err) => {
         console.log(err);
       });
-  }, [router]);
+  }, [filter, page]);
 
   return (
     <>
       <PageTitle title="History" />
 
       <Layout>
-        <div className={styles["header"]}>
-          <p className={styles["title"]}>Transaction History</p>
-          <select
-            name="filter"
-            onChange={(e) =>
-              //   router.push(`/history?filter=${e.target.value}`)
-              //   router.push(
-              //     `/history${
-              //       e.target.value === "WEEK" ? "" : `?filter=${e.target.value}`
-              //     }`
-              //   )
-              router.push(
-                e.target.value === "WEEK"
-                  ? "/history"
-                  : `/history?filter=${e.target.value}`
-              )
-            }
-          >
-            <option selected disabled hidden>
-              Select filter
-            </option>
-            <option value="WEEK">WEEK</option>
-            <option value="MONTH">MONTH</option>
-            <option value="YEAR">YEAR</option>
-          </select>
-        </div>
-        <div className={styles["transaction-list"]}>
-          {historyData.length > 0 &&
-            historyData.map((data, idx) => <Card data={data} key={idx} />)}
+        <div className={styles["main"]}>
+          <div className={styles["header"]}>
+            <p className={styles["title"]}>Transaction History</p>
+            <select
+              name="filter"
+              onChange={(e) =>
+                router.push(
+                  e.target.value === "WEEK"
+                    ? "/history"
+                    : `/history?filter=${e.target.value}`
+                )
+              }
+            >
+              <option selected disabled hidden>
+                Select filter
+              </option>
+              <option value="WEEK">WEEK</option>
+              <option value="MONTH">MONTH</option>
+              <option value="YEAR">YEAR</option>
+            </select>
+          </div>
+          <div className={styles["transaction-list"]}>
+            {historyData.length > 0 &&
+              historyData.map((data, idx) => <Card data={data} key={idx} />)}
+          </div>
         </div>
       </Layout>
     </>
@@ -105,7 +101,8 @@ function History({ auth }) {
 
 const mapStateToProps = (state) => {
   return {
-    auth: state.auth,
+    id: state.auth.userData.id,
+    token: state.auth.userData.token,
   };
 };
 
