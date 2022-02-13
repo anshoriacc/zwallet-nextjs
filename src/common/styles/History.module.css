@@ -78,3 +78,29 @@
 .type {
   color: var(--dark03);
 }
+
+.pagination-buttons {
+  margin-top: auto;
+  align-self: end;
+  display: flex;
+  grid-gap: 1rem;
+}
+
+.pagination-buttons button {
+  font-weight: 700;
+  padding: 0.5rem;
+  border: 1px solid transparent;
+  border-radius: 0.75rem;
+  background-color: var(--primary);
+  color: white;
+  line-height: 1rem;
+}
+
+.pagination-buttons button:hover {
+  opacity: 0.7;
+}
+
+.pagination-buttons button:disabled {
+  background-color: var(--dark03);
+  opacity: 1;
+}

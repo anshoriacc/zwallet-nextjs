@@ -27,7 +27,7 @@ export default function ManagePhone() {
             <div className={styles["pin"]}>
               <input
                 type="number"
-                name="pin"
+                name="phone"
                 placeholder="Phone number"
                 minLength="10"
                 maxLength="12"

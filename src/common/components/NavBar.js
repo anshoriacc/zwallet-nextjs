@@ -33,7 +33,10 @@ const NavBar = (props) => {
             <div className={styles["img"]}>
               <Image
                 alt="profile"
-                src={"/images/default.jpg"}
+                src={`https://zwalet.herokuapp.com/uploads/${props.userData.image}`}
+                placeholder="blur"
+                blurDataURL="/images/default.jpg"
+                onError={() => "/images/default.jpg"}
                 layout="fill"
                 objectFit="contain"
               />

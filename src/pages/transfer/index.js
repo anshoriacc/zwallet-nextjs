@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import Image from "next/image";
 
@@ -10,6 +10,7 @@ import Layout from "src/common/components/LayoutLoggedIn";
 import PageTitle from "src/common/components/PageTitle";
 
 import { getAllUser } from "src/modules/api/transfer";
+import { resetTransferAction } from "src/redux/actions/transfer";
 
 function Card({ data }) {
   return (
@@ -36,18 +37,23 @@ function Card({ data }) {
 }
 
 function Transfer(props) {
+  const dispatch = useDispatch();
+  const router = useRouter();
   const [userData, setUserData] = useState([]);
   const [paginationData, setPaginationData] = useState({});
-  const router = useRouter();
 
   useEffect(() => {
-    getAllUser(props.token, 6)
+    getAllUser(props.token, 1)
       .then((res) => {
         setUserData(res.data.data);
         const { pagination } = res.data;
-        setPaginationData(pagination);
+        setPaginationData({ ...pagination });
+        console.log(res.data.data);
+        console.log("pagination", paginationData);
       })
       .catch((err) => console.log(err));
+
+    dispatch(resetTransferAction());
   }, []);
 
   return (
@@ -77,7 +83,28 @@ function Transfer(props) {
                 userData.map((data, idx) => <Card data={data} key={idx} />)}
             </div>
           </div>
-          <div className={styles["pagination"]}></div>
+          <div className={styles["pagination-buttons"]}>
+            <button
+              disabled={paginationData.page == 1 ? true : false}
+              className={styles["prev"]}
+              onClick={() => {
+                console.log("first");
+              }}
+            >
+              <i className="bi bi-chevron-left"></i>
+            </button>
+            <button
+              disabled={
+                paginationData.page == paginationData.totalPage ? true : false
+              }
+              className={styles["next"]}
+              onClick={() => {
+                console.log("first");
+              }}
+            >
+              <i className="bi bi-chevron-right"></i>
+            </button>
+          </div>
         </div>
       </Layout>
     </>

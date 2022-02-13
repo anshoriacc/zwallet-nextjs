@@ -5,6 +5,9 @@ import { connect, useDispatch } from "react-redux";
 import Image from "next/image";
 import { Button, Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
+import { Chart as ChartJS } from "chart.js/auto";
+import { Chart } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 
 import styles from "src/common/styles/Dashboard.module.css";
 
@@ -13,9 +16,11 @@ import PageTitle from "src/common/components/PageTitle";
 
 import currencyPeriod from "src/modules/helpers/currencyPeriod";
 import { getHistory } from "src/modules/api/history";
+import { getStats } from "src/modules/api/statistic";
 import { topUp } from "src/modules/api/topUp";
 import { getDetailUser } from "src/modules/api/user";
 import { resetTransferAction } from "src/redux/actions/transfer";
+import { updateUserData } from "src/redux/actions/user";
 
 function Card({ data }) {
   return (
@@ -40,7 +45,7 @@ function Card({ data }) {
           data.type === "topup" ? styles["green"] : styles["red"]
         }`}
       >
-        {data.type === "topup" ? "+" : "-"} Rp. {currencyPeriod(data.amount)}
+        {data.type === "topup" ? "+" : "-"}Rp. {currencyPeriod(data.amount)}
       </div>
     </div>
   );
@@ -50,15 +55,28 @@ function Dashboard(props) {
   const dispatch = useDispatch();
   const [historyData, setHistoryData] = useState([]);
   const [userData, setUserData] = useState({});
+  const [chartData, setChartData] = useState({});
   const router = useRouter();
   let page, filter;
   page = router.query.page || 1;
   filter = router.query.filter || "WEEK";
 
   useEffect(() => {
+    getDetailUser(props.token, props.id)
+      .then((res) => {
+        setUserData(res.data.data);
+        if (userData.balance != props.userData.balance) {
+          dispatch(updateUserData(res.data.data));
+        }
+      })
+      .catch((err) => console.log(err));
+  }, [userData.balance]);
+
+  useEffect(() => {
     if (historyData.length === 0) {
-      getHistory(props.token, 3, filter, page)
+      getHistory(props.token, 5, filter, page)
         .then((res) => {
+          console.log(res.data.data);
           setHistoryData(res.data.data);
         })
         .catch((err) => {
@@ -66,14 +84,12 @@ function Dashboard(props) {
         });
     }
 
-    getDetailUser(props.token, props.id)
+    getStats(props.token, props.id)
       .then((res) => {
-        setUserData(res.data.data);
+        setChartData(res.data.data);
       })
-      .catch((err) => console.log(err));
-  });
+      .catch();
 
-  useEffect(() => {
     dispatch(resetTransferAction());
   }, []);
 
@@ -113,6 +129,68 @@ function Dashboard(props) {
       });
   };
 
+  // console.log(chartData.listIncome[5].total)
+
+  const incomeData = {
+    label: "Income",
+    data: chartData.listIncome
+      ? [
+          chartData.listIncome[5].total,
+          chartData.listIncome[6].total,
+          chartData.listIncome[0].total,
+          chartData.listIncome[1].total,
+          chartData.listIncome[2].total,
+          chartData.listIncome[3].total,
+          chartData.listIncome[4].total,
+        ]
+      : [],
+    backgroundColor: "#6379F4",
+  };
+
+  const expenseData = {
+    label: "Expense",
+    data: chartData.listIncome
+      ? [
+          chartData.listExpense[5].total,
+          chartData.listExpense[6].total,
+          chartData.listExpense[0].total,
+          chartData.listExpense[1].total,
+          chartData.listExpense[2].total,
+          chartData.listExpense[3].total,
+          chartData.listExpense[4].total,
+        ]
+      : [],
+    backgroundColor: "#9DA6B5",
+  };
+
+  const data = {
+    labels: ["Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"],
+    datasets: [incomeData, expenseData],
+  };
+
+  const chartOptions = {
+    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: {
+          display: false,
+        },
+      },
+      x: {
+        grid: {
+          display: false,
+        },
+      },
+    },
+    legend: {
+      label: {
+        fontSize: 14,
+        fontFamily: "Nunito Sans",
+      },
+    },
+  };
+
   return (
     <>
       <PageTitle title="Dashboard" />
@@ -139,16 +217,50 @@ function Dashboard(props) {
               </button>
             </div>
           </div>
-          <div className={styles["history-container"]}>
-            <div className={styles["header"]}>
-              <p className={styles["title"]}>Transaction History</p>
-              <Link href="/history">
-                <a className={styles["see-all"]}>See all</a>
-              </Link>
+          <div className={styles["bottom-container"]}>
+            <div className={styles["graph-container"]}>
+              <div className={styles["income-expense"]}>
+                <div className={styles["income"]}>
+                  <i className="bi bi-arrow-down-short"></i>
+                  <p className={styles["type"]}>Income</p>
+                  <p className={styles["name"]}>{`Rp. ${
+                    chartData.totalIncome
+                      ? currencyPeriod(chartData.totalIncome)
+                      : ""
+                  }`}</p>
+                </div>
+                <div className={styles["expense"]}>
+                  <i className="bi bi-arrow-up-short"></i>
+                  <p className={styles["type"]}>Expense</p>
+                  <p className={styles["name"]}>{`Rp. ${
+                    chartData.totalExpense
+                      ? currencyPeriod(chartData.totalExpense)
+                      : ""
+                  }`}</p>
+                </div>
+              </div>
+              <div className={styles["graph"]}>
+                <Bar data={data} options={chartOptions} />
+              </div>
             </div>
-            <div className={styles["transaction-list"]}>
-              {historyData.length > 0 &&
-                historyData.map((data, idx) => <Card data={data} key={idx} />)}
+            <div className={styles["history-container"]}>
+              <div className={styles["header"]}>
+                <p className={styles["title"]}>Transaction History</p>
+                <Link href="/history">
+                  <a className={styles["see-all"]}>See all</a>
+                </Link>
+              </div>
+              <div className={styles["transaction-list"]}>
+                {historyData.length === 0 && (
+                  <div>
+                    No transaction made, made one by top up or transfer now!
+                  </div>
+                )}
+                {historyData.length > 0 &&
+                  historyData.map((data, idx) => (
+                    <Card data={data} key={idx} />
+                  ))}
+              </div>
             </div>
           </div>
         </section>

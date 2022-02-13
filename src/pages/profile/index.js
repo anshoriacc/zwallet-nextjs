@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { Modal, Button } from "react-bootstrap";
 
 import styles from "src/common/styles/Profile.module.css";
@@ -11,9 +11,10 @@ import Layout from "src/common/components/LayoutLoggedIn";
 import PageTitle from "src/common/components/PageTitle";
 
 import { getDetailUser } from "src/modules/api/user";
+import { resetTransferAction } from "src/redux/actions/transfer";
 
 function Profile(props) {
-  // console.log(auth.userData.token);
+  const dispatch = useDispatch();
   const router = useRouter();
   const [userData, setUserData] = useState({});
   const [shownLogoutModal, setShownLogoutModal] = useState(false);
@@ -25,6 +26,10 @@ function Profile(props) {
   const hideLogoutModal = () => {
     setShownLogoutModal(false);
   };
+
+  useEffect(() => {
+    dispatch(resetTransferAction());
+  }, []);
 
   // useEffect(() => {
   //   getDetailUser(auth.userData.token, auth.userData.id)
@@ -48,11 +53,13 @@ function Profile(props) {
         <div className={styles["main"]}>
           <div className={styles["img"]}>
             <Image
-              src={"/images/default.jpg"}
-              placeholder={"empty"}
               alt="profile"
+              src={`https://zwalet.herokuapp.com/uploads/${props.userData.image}`}
+              placeholder="blur"
+              blurDataURL="/images/default.jpg"
+              onError={() => "/images/default.jpg"}
               layout="fill"
-              objectFit="cover"
+              objectFit="contain"
             />
           </div>
           <div className={styles["name-type"]}>

@@ -14,7 +14,7 @@ import Footer from "./Footer";
 import { topUp } from "src/modules/api/topUp";
 import { logoutAction } from "src/redux/actions/auth";
 
-function LayoutLoggedIn({ children }, props) {
+function LayoutLoggedIn({ children, auth }) {
   const router = useRouter();
   const dispatch = useDispatch;
   const [active1, setActive1] = useState(false);
@@ -53,19 +53,14 @@ function LayoutLoggedIn({ children }, props) {
       amount: e.target.amount.value,
     };
     // console.log(auth.userData.token);
-    topUp(body, props.auth.userData.token)
+    topUp(body, auth.userData.token)
       .then((res) => {
-        toast.info("Redirecting to payment page");
+        hideTopUpModal;
+        toast.info("Complete your payment method.");
         window.open(
           res.data.data.redirectUrl,
           "_blank" // <- This is what makes it open in a new window.
         );
-        getDetailUser(props.auth.userData.token, props.auth.userData.id)
-          .then((res) => {
-            dispatch(updateUserData(res.data.data));
-          })
-          .catch((err) => console.log(err));
-        router.push("/dashboard");
       })
       .catch((err) => {
         toast.error("Top up error.", { autoClose: false });
@@ -77,7 +72,11 @@ function LayoutLoggedIn({ children }, props) {
   return (
     <main className={styles["main"]}>
       <NavBar />
-      <section className={styles["main-container"]}>
+      <section
+        className={`${styles["main-container"]} ${
+          router.pathname === "/dashboard" ? styles["dashboard"] : ""
+        }`}
+      >
         <div className={styles["openNav"]} onClick={toggleNav}>
           <i className={`bi bi-list`}></i>
         </div>
@@ -136,7 +135,9 @@ function LayoutLoggedIn({ children }, props) {
                   title="History"
                 >
                   <div className={styles["nav-item"]}>
-                    <i className={`${styles["nav-icon"]} bi bi-clock-history`}></i>
+                    <i
+                      className={`${styles["nav-icon"]} bi bi-clock-history`}
+                    ></i>
                     <p className={styles["nav-label"]}>History</p>
                   </div>
                 </div>

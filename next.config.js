@@ -3,4 +3,7 @@ module.exports = {
   env: {
     BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
   },
+  images: {
+    domains: ["zwalet.herokuapp.com"],
+  },
 };
