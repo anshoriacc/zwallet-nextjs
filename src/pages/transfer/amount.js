@@ -96,7 +96,7 @@ function TransferAmount(props) {
               autoComplete="off"
               className={styles["input-notes"]}
             ></input>
-            <button type="submit" className={styles["confirm"]}>
+            <button type="submit" className={`btn btn-primary ${styles["confirm"]}`}>
               Continue
             </button>
           </form>

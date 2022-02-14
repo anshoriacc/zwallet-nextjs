@@ -105,7 +105,7 @@ function Transfer(props) {
           <div className={styles["pagination-buttons"]}>
             <button
               disabled={paginationData.page == 1 ? true : false}
-              className={styles["prev"]}
+              className={`btn btn-primary ${styles["prev"]}`}
               onClick={() => {
                 if (router.query.page && page > 1) {
                   router.push(`/transfer/?page=${page - 1}`);
@@ -123,7 +123,7 @@ function Transfer(props) {
               disabled={
                 paginationData.page == paginationData.totalPage ? true : false
               }
-              className={styles["next"]}
+              className={`btn btn-primary ${styles["next"]}`}
               onClick={() => {
                 if (!router.query.q && !router.query.page) {
                   router.push(`${router.asPath}?page=${page + 1}`);

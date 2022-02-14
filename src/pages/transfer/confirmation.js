@@ -123,7 +123,7 @@ function TransferConfirmation(props) {
                   </p>
                 </div>
               </div>
-              <button className={styles["confirm"]} onClick={showModal}>
+              <button className={`btn btn-primary ${styles["confirm"]}`} onClick={showModal}>
                 Continue
               </button>
             </section>
