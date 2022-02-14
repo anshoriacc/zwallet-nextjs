@@ -13,14 +13,15 @@
 .main-container {
   position: relative;
   padding: 2vmax 10vw;
-  height: calc(100vh - 4vmax - 3rem);
+  min-height: calc(100vh - 4vmax - 3rem);
+  /* height: auto; */
   display: grid;
   grid-template-columns: 1fr;
 }
 
-.main-container.dashboard {
+/* .main-container.dashboard {
   height: auto;
-}
+} */
 
 .left {
   display: none;
