@@ -3,7 +3,7 @@
   height: 100vh;
   overflow-x: hidden;
   padding-top: calc(4vmax + 3rem);
-  background-color: var(--background);
+  background-color: rgb(245, 245, 245);
 }
 
 .main p {
@@ -14,14 +14,9 @@
   position: relative;
   padding: 2vmax 10vw;
   min-height: calc(100vh - 4vmax - 3rem);
-  /* height: auto; */
   display: grid;
   grid-template-columns: 1fr;
 }
-
-/* .main-container.dashboard {
-  height: auto;
-} */
 
 .left {
   display: none;
@@ -178,10 +173,6 @@ input.input-amount {
 }
 
 @media (min-width: 768px) {
-  .main-container {
-    /* height: calc(100vh - 8vmax - 4.5rem); */
-  }
-
   .nav-label {
     display: initial;
   }

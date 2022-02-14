@@ -234,7 +234,7 @@ function Dashboard(props) {
                   <p className={styles["name"]}>{`Rp. ${
                     chartData.totalIncome
                       ? currencyPeriod(chartData.totalIncome)
-                      : ""
+                      : "0"
                   }`}</p>
                 </div>
                 <div className={styles["expense"]}>
@@ -243,7 +243,7 @@ function Dashboard(props) {
                   <p className={styles["name"]}>{`Rp. ${
                     chartData.totalExpense
                       ? currencyPeriod(chartData.totalExpense)
-                      : ""
+                      : "0"
                   }`}</p>
                 </div>
               </div>

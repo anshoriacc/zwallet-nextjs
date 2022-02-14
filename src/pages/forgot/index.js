@@ -24,7 +24,7 @@ function Forgot(props) {
     e.preventDefault();
     const body = {
       email: e.target.email.value,
-      linkDirect: "zwallet-next.vercel.app/forgot",
+      linkDirect: "https://zwallet-next.vercel.app/forgot",
     };
 
     forgotPassword(body)
