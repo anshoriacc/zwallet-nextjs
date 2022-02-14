@@ -48,7 +48,7 @@ function Login(props) {
         })
         .catch((err) => console.log(err));
       if (!props.auth.userData.pin) router.push("/createpin");
-      router.push("/dashboard");
+      if (props.auth.userData.pin) router.push("/dashboard");
     }
     if (props.auth.isRejected) {
       toast.error("Login error", { autoClose: false });
