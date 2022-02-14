@@ -229,6 +229,7 @@
   border-radius: 2rem;
   overflow: hidden;
   position: relative;
+  box-shadow: var(--shadow);
 }
 
 @media (min-width: 576px) {
