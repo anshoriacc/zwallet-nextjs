@@ -124,3 +124,15 @@
   height: 3rem;
   text-align: center;
 }
+
+.password-notif {
+  color: var(--red);
+}
+
+.password-notif.hide {
+  display: initial;
+}
+
+.password-notif.show {
+  display: none;
+}
