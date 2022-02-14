@@ -126,8 +126,13 @@ function History(props) {
               disabled={paginationData.page == 1 ? true : false}
               className={styles["prev"]}
               onClick={() => {
-                if (router.query.page == 2) {
-                  router.push(`/history`);
+                if (router.query.page && page > 1) {
+                  router.push(`/history/?page=${page - 1}`);
+                }
+                if (router.query.filter && router.query.page && page > 1) {
+                  router.push(
+                    `/history/?filter=${router.query.filter}&page=${page - 1}`
+                  );
                 }
               }}
             >
@@ -148,9 +153,12 @@ function History(props) {
                 if (router.query.filter) {
                   router.push(`${router.asPath}&page=${page + 1}`);
                 }
+                if (!router.query.q && page > 1) {
+                  router.push(`${router.pathname}?page=${page + 1}`);
+                }
                 if (router.query.filter && page > 1) {
                   router.push(
-                    `${router.pathname}?filter=${filter}&page=${page + 1}`
+                    `${router.pathname}?filter=${router.query.filter}&page=${page + 1}`
                   );
                 }
               }}
