@@ -42,7 +42,7 @@ const NavBar = (props) => {
                 blurDataURL="/images/default.jpg"
                 onError={() => "/images/default.jpg"}
                 layout="fill"
-                objectFit="contain"
+                objectFit="cover"
               />
             </div>
             <div>

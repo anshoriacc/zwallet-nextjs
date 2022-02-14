@@ -28,7 +28,7 @@ function Card({ data }) {
             blurDataURL="/images/default.jpg"
             onError={() => "/images/default.jpg"}
             layout="fill"
-            objectFit="contain"
+            objectFit="cover"
           />
         </div>
         <div className={styles["name-phone"]}>
@@ -93,6 +93,7 @@ function Transfer(props) {
                 name="q"
                 className={styles["search"]}
                 placeholder="Search..."
+                defaultValue={!router.query.q ? null : router.query.q}
               ></input>
             </form>
             <div className={styles["contact-list"]}>
