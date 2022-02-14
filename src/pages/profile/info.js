@@ -44,9 +44,15 @@ function PersonalInfo(props) {
                 {props.userData.noTelp || "-"}
               </p>
             </div>
-            <Link href="/profile/manage-phone">
-              <a>Manage</a>
-            </Link>
+            {props.userData.noTelp ? (
+              <Link href="/profile/manage-phone">
+                <a>Manage</a>
+              </Link>
+            ) : (
+              <Link href="/profile/add-phone">
+                <a>Add</a>
+              </Link>
+            )}
           </div>
         </div>
       </Layout>

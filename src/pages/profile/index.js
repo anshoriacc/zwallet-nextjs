@@ -1,23 +1,34 @@
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { connect, useDispatch } from "react-redux";
 import { Modal, Button } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 import styles from "src/common/styles/Profile.module.css";
 
 import Layout from "src/common/components/LayoutLoggedIn";
 import PageTitle from "src/common/components/PageTitle";
 
-import { getDetailUser } from "src/modules/api/user";
+import { deleteImage, getDetailUser, editImage } from "src/modules/api/user";
 import { resetTransferAction } from "src/redux/actions/transfer";
+import { updateUserData } from "src/redux/actions/user";
 
 function Profile(props) {
   const dispatch = useDispatch();
   const router = useRouter();
   const [userData, setUserData] = useState({});
   const [shownLogoutModal, setShownLogoutModal] = useState(false);
+  const [shownImageModal, setShownImageModal] = useState(false);
+
+  const showImageModal = () => {
+    setShownImageModal(true);
+  };
+
+  const hideImageModal = () => {
+    setShownImageModal(false);
+  };
 
   const showLogoutModal = () => {
     setShownLogoutModal(true);
@@ -27,23 +38,50 @@ function Profile(props) {
     setShownLogoutModal(false);
   };
 
+  const inputFileRef = React.createRef();
+
+  const inputImage = () => {
+    inputFileRef.current.click();
+  };
+
+  const editImageHandler = (e) => {
+    const body = new FormData();
+    body.append("image", e.target.files[0]);
+
+    editImage(props.token, props.id, body)
+      .then((res) => {
+        if (res.data.status == 200) {
+          toast.success("Success");
+          getDetailUser(props.token, props.id)
+            .then((res) => {
+              dispatch(updateUserData(res.data.data));
+            })
+            .catch((err) => console.log(err));
+          router.push("/profile");
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const deleteImageHandler = () => {
+    deleteImage(props.token, props.id)
+      .then((res) => {
+        if (res.data.status == 200) {
+          toast.success("Success");
+          getDetailUser(props.token, props.id)
+            .then((res) => {
+              dispatch(updateUserData(res.data.data));
+            })
+            .catch((err) => console.log(err));
+          router.push("/profile");
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
   useEffect(() => {
     dispatch(resetTransferAction());
   }, []);
-
-  // useEffect(() => {
-  //   getDetailUser(auth.userData.token, auth.userData.id)
-  //     .then((res) => {
-  //       const data = res.data.data;
-  //       setUserData({ ...userData, data });
-  //       // console.log(userData);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
-
-  // console.log();
 
   return (
     <>
@@ -51,10 +89,14 @@ function Profile(props) {
 
       <Layout>
         <div className={styles["main"]}>
-          <div className={styles["img"]}>
+          <div onClick={showImageModal} className={styles["img"]}>
             <Image
               alt="profile"
-              src={`https://zwalet.herokuapp.com/uploads/${props.userData.image}`}
+              src={
+                props.userData.image
+                  ? `https://zwalet.herokuapp.com/uploads/${props.userData.image}`
+                  : "/images/default.jpg"
+              }
               placeholder="blur"
               blurDataURL="/images/default.jpg"
               onError={() => "/images/default.jpg"}
@@ -62,6 +104,15 @@ function Profile(props) {
               objectFit="contain"
             />
           </div>
+          <input
+            type="file"
+            name="image"
+            hidden={true}
+            ref={inputFileRef}
+            onChange={(e) => {
+              editImageHandler(e);
+            }}
+          />
           <div className={styles["name-type"]}>
             <p
               className={styles["name"]}
@@ -71,16 +122,19 @@ function Profile(props) {
           <Link href="/profile/info" passHref>
             <div className={styles["link-container"]}>
               <p>Personal Information</p>
+              <i className="bi bi-arrow-right"></i>
             </div>
           </Link>
           <Link href="/profile/change-password" passHref>
             <div className={styles["link-container"]}>
               <p>Change Password</p>
+              <i className="bi bi-arrow-right"></i>
             </div>
           </Link>
           <Link href="/profile/change-pin" passHref>
             <div className={styles["link-container"]}>
               <p>Change Pin</p>
+              <i className="bi bi-arrow-right"></i>
             </div>
           </Link>
           <div className={styles["link-container"]} onClick={showLogoutModal}>
@@ -98,11 +152,47 @@ function Profile(props) {
           </Modal.Header>
           <Modal.Body>Are you sure want to log out?</Modal.Body>
           <Modal.Footer>
+            <Button variant="danger" onClick={() => router.push("/logout")}>
+              Logout
+            </Button>
             <Button variant="secondary" onClick={hideLogoutModal}>
               Cancel
             </Button>
-            <Button variant="danger" onClick={() => router.push("/logout")}>
-              Logout
+          </Modal.Footer>
+        </Modal>
+        <Modal
+          show={shownImageModal}
+          onHide={hideImageModal}
+          backdrop="static"
+          keyboard={false}
+        >
+          <Modal.Header closeButton></Modal.Header>
+
+          <Modal.Body>
+            <div className={styles["img-center"]}>
+              <div className={styles["img-modal"]}>
+                <Image
+                  alt="profile"
+                  src={
+                    props.userData.image
+                      ? `https://zwalet.herokuapp.com/uploads/${props.userData.image}`
+                      : "/images/default.jpg"
+                  }
+                  placeholder="blur"
+                  blurDataURL="/images/default.jpg"
+                  onError={() => "/images/default.jpg"}
+                  layout="fill"
+                  objectFit="contain"
+                />
+              </div>
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="danger" onClick={deleteImageHandler}>
+              Delete
+            </Button>
+            <Button variant="secondary" onClick={inputImage}>
+              Edit
             </Button>
           </Modal.Footer>
         </Modal>

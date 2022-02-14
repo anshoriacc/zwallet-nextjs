@@ -18,16 +18,10 @@
 }
 
 .search {
-  background-color: #0000000d;
   width: 100%;
   height: 3rem;
   border-radius: 0.75rem;
-  border: 1px solid transparent;
-  padding: 0.5rem;
-  box-shadow: var(--shadow);
-}
-.search:focus {
-  outline: none;
+  border: 2px solid black;
 }
 
 .contact-list {
@@ -281,9 +275,4 @@ button.confirm {
 .buttons .home {
   background-color: var(--primary);
   color: white;
-}
-
-.center {
-  display: flex;
-  justify-content: center;
 }

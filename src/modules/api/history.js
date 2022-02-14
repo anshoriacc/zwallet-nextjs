@@ -13,3 +13,12 @@ export const getHistory = (token, limit, filter, page) => {
   return axios.get(URL, config(token));
 };
 
+export const getHistoryDetail = (token, id) => {
+  const URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/transaction/history/${id}`;
+  return axios.get(URL, config(token));
+};
+
+export const exportTransaction = (token, id) => {
+  const URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/export/transaction/${id}`;
+  return axios.get(URL, config(token));
+};

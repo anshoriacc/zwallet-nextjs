@@ -18,11 +18,17 @@ function Card({ data }) {
       <div className={styles["contact-item"]}>
         <div className={styles["img"]}>
           <Image
-            src={"/images/default.jpg"}
-            placeholder={"empty"}
             alt="profile"
+            src={
+              data.image
+                ? `https://zwalet.herokuapp.com/uploads/${data.image}`
+                : "/images/default.jpg"
+            }
+            placeholder="blur"
+            blurDataURL="/images/default.jpg"
+            onError={() => "/images/default.jpg"}
             layout="fill"
-            objectFit="cover"
+            objectFit="contain"
           />
         </div>
         <div className={styles["name-phone"]}>
@@ -42,19 +48,32 @@ function Transfer(props) {
   const [userData, setUserData] = useState([]);
   const [paginationData, setPaginationData] = useState({});
 
+  let page = parseInt(router.query.page) || 1;
+
   useEffect(() => {
-    getAllUser(props.token, 1)
-      .then((res) => {
-        setUserData(res.data.data);
-        const { pagination } = res.data;
-        setPaginationData({ ...pagination });
-        console.log(res.data.data);
-        console.log("pagination", paginationData);
-      })
-      .catch((err) => console.log(err));
+    router.query.q
+      ? getAllUser(props.token, page, router.query.q)
+          .then((res) => {
+            setUserData(res.data.data);
+            console.log(router.query.q);
+            const { pagination } = res.data;
+            setPaginationData({ ...pagination });
+            console.log(res.data.data);
+            console.log("pagination", paginationData);
+          })
+          .catch((err) => console.log(err))
+      : getAllUser(props.token, page)
+          .then((res) => {
+            setUserData(res.data.data);
+            const { pagination } = res.data;
+            setPaginationData({ ...pagination });
+            console.log(res.data.data);
+            console.log("pagination", paginationData);
+          })
+          .catch((err) => console.log(err));
 
     dispatch(resetTransferAction());
-  }, []);
+  }, [router.query]);
 
   return (
     <>
@@ -88,7 +107,14 @@ function Transfer(props) {
               disabled={paginationData.page == 1 ? true : false}
               className={styles["prev"]}
               onClick={() => {
-                console.log("first");
+                if (router.query.page && page > 1) {
+                  router.push(`/transfer/?page=${page - 1}`);
+                }
+                if (router.query.q && router.query.page && page > 1) {
+                  router.push(
+                    `/transfer/?q=${router.query.q}&page=${page - 1}`
+                  );
+                }
               }}
             >
               <i className="bi bi-chevron-left"></i>
@@ -99,7 +125,23 @@ function Transfer(props) {
               }
               className={styles["next"]}
               onClick={() => {
-                console.log("first");
+                if (!router.query.q && !router.query.page) {
+                  router.push(`${router.asPath}?page=${page + 1}`);
+                }
+                if (!router.query.q) {
+                  router.push(`${router.asPath}?page=${page + 1}`);
+                }
+                if (router.query.q) {
+                  router.push(`${router.asPath}&page=${page + 1}`);
+                }
+                if (!router.query.q && page > 1) {
+                  router.push(`${router.pathname}?page=${page + 1}`);
+                }
+                if (router.query.q && page > 1) {
+                  router.push(
+                    `${router.pathname}?q=${router.query.q}&page=${page + 1}`
+                  );
+                }
               }}
             >
               <i className="bi bi-chevron-right"></i>

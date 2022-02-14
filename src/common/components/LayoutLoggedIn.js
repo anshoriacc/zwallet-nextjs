@@ -219,11 +219,11 @@ function LayoutLoggedIn({ children, auth }) {
         </Modal.Header>
         <Modal.Body>Are you sure want to log out?</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={hideLogoutModal}>
-            Cancel
-          </Button>
           <Button variant="danger" onClick={() => router.push("/logout")}>
             Logout
+          </Button>
+          <Button variant="secondary" onClick={hideLogoutModal}>
+            Cancel
           </Button>
         </Modal.Footer>
       </Modal>
@@ -239,7 +239,7 @@ function LayoutLoggedIn({ children, auth }) {
         <form onSubmit={topUpHandler}>
           <Modal.Body>
             <p>Enter the amount of money, and click submit</p>
-            <input type="text" name="amount"></input>
+            <input className={styles["input-amount"]} type="text" name="amount"></input>
           </Modal.Body>
           <Modal.Footer>
             <Button type="submit" variant="primary">

@@ -1,12 +1,41 @@
-import Head from "next/head";
 import Link from "next/link";
+import { connect } from "react-redux";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 import styles from "src/common/styles/Auth.module.css";
 
 import Layout from "src/common/components/LayoutAuth";
 import PageTitle from "src/common/components/PageTitle";
 
-export default function Forgot() {
+import { forgotPassword } from "src/modules/api/auth";
+
+function Forgot(props) {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (props.auth.isFulfilled) {
+      router.push("/dashboard");
+    }
+  }, []);
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    const body = {
+      email: e.target.email.value,
+      linkDirect: "zwallet-next.vercel.app/forgot",
+    };
+
+    forgotPassword(body)
+      .then((res) => {
+        if (res.data.status == 200) {
+          toast.success("Success, check your email.");
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <>
       <PageTitle title="Forgot Password" />
@@ -21,7 +50,7 @@ export default function Forgot() {
           link to your email and you will be directed to the reset password
           screens.
         </p>
-        <form className={styles["form"]}>
+        <form onSubmit={submitHandler} className={styles["form"]}>
           <div className={styles["email"]}>
             <i className="bi bi-envelope"></i>
             <input
@@ -45,3 +74,11 @@ export default function Forgot() {
     </>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth,
+  };
+};
+
+export default connect(mapStateToProps)(Forgot);

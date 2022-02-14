@@ -38,6 +38,13 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem 0;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.transaction-item:hover {
+  background-color: #0000000d;
+  cursor: pointer;
 }
 
 .transaction-item .left {

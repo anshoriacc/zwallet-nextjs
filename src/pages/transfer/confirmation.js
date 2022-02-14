@@ -4,6 +4,10 @@ import { useRouter } from "next/router";
 import { connect, useDispatch } from "react-redux";
 import Image from "next/image";
 import { toast } from "react-toastify";
+import { Button, Modal } from "react-bootstrap";
+import dynamic from "next/dynamic";
+
+const ReactCodeInput = dynamic(import("react-code-input"));
 
 import styles from "src/common/styles/Transfer.module.css";
 
@@ -14,19 +18,42 @@ import currencyPeriod from "src/modules/helpers/currencyPeriod";
 import { transferAction } from "src/redux/actions/transfer";
 import { getDetailUser } from "src/modules/api/user";
 import { updateUserData } from "src/redux/actions/user";
+import { checkPin } from "src/modules/api/user";
 
 function TransferConfirmation(props) {
   const router = useRouter();
   const dispatch = useDispatch();
+  const [shownModal, setShownModal] = useState(false);
+  const [pin, setPin] = useState(null);
 
-  const transferHandler = () => {
+  const formChange = (e) => {
+    setPin(e);
+  };
+
+  const showModal = () => {
+    setShownModal(true);
+  };
+
+  const hideModal = () => {
+    setShownModal(false);
+  };
+
+  const transferHandler = (e) => {
+    e.preventDefault();
+
     const body = {
       receiverId: props.transferData.receiverId,
       amount: props.transferData.amount,
       notes: props.transferData.notes,
     };
 
-    dispatch(transferAction(props.token, body));
+    checkPin(props.token, pin)
+      .then((res) => {
+        if (res.data.status == 200) {
+          dispatch(transferAction(props.token, body));
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
@@ -96,13 +123,47 @@ function TransferConfirmation(props) {
                   </p>
                 </div>
               </div>
-              <button className={styles["confirm"]} onClick={transferHandler}>
+              <button className={styles["confirm"]} onClick={showModal}>
                 Continue
               </button>
             </section>
           </div>
         </div>
       </Layout>
+      <Modal
+        show={shownModal}
+        onHide={hideModal}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Enter pin to transfer</Modal.Title>
+        </Modal.Header>
+        <form onSubmit={transferHandler} className={styles["form"]}>
+          <Modal.Body>
+            <p>
+              Enter your 6 digits PIN for confirmation to continue transferring
+              money.{" "}
+            </p>
+            <div className={styles["center"]}>
+              <ReactCodeInput
+                type="password"
+                fields={6}
+                name="pin"
+                onChange={formChange}
+              />
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={hideModal}>
+              Cancel
+            </Button>
+            <Button type="submit" variant="primary">
+              Confirm
+            </Button>
+          </Modal.Footer>
+        </form>
+      </Modal>
     </>
   );
 }

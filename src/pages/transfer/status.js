@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { connect, useDispatch } from "react-redux";
 import Image from "next/image";
@@ -9,17 +8,26 @@ import styles from "src/common/styles/Transfer.module.css";
 import Layout from "src/common/components/LayoutLoggedIn";
 import PageTitle from "src/common/components/PageTitle";
 
-import { resetTransferAction } from "src/redux/actions/transfer";
 import currencyPeriod from "src/modules/helpers/currencyPeriod";
+import { exportTransaction } from "src/modules/api/history";
 
 function TransferStatus(props) {
   const router = useRouter();
   const dispatch = useDispatch();
-  console.log(props);
+
+  const [exportData, setExportData] = useState("");
 
   const backHomeHandler = () => {
     router.push("/dashboard");
   };
+
+  useEffect(() => {
+    exportTransaction(props.token, props.transferResult.data.id)
+      .then((res) => {
+        setExportData(res.data.data.url);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <>
@@ -100,7 +108,9 @@ function TransferStatus(props) {
             </div>
           </section>
           <section className={styles["buttons"]}>
-            <button className={styles["download"]}>Download PDF</button>
+            <a href={exportData} target="_blank" rel="noreferrer">
+              <button className={styles["download"]}>Download PDF</button>
+            </a>
             <button className={styles["home"]} onClick={backHomeHandler}>
               Back to Home
             </button>

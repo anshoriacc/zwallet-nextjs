@@ -10,9 +10,9 @@ import styles from "src/common/styles/Profile.module.css";
 
 import Layout from "src/common/components/LayoutLoggedIn";
 import PageTitle from "src/common/components/PageTitle";
-import { checkPin } from "src/modules/api/user";
+import { editPin } from "src/modules/api/user";
 
-function ChangePin(props) {
+function NewPin(props) {
   const router = useRouter();
   const [pin, setPin] = useState(null);
 
@@ -22,14 +22,15 @@ function ChangePin(props) {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    // const body = {
-    //   pin: pin,
-    // };
-    checkPin(props.token, pin)
+    const body = {
+      pin: pin,
+    };
+
+    editPin(props.token, props.id, body)
       .then((res) => {
         if (res.data.status == 200) {
-          toast.success("Correct pin");
-          router.push("/profile/new-pin");
+          toast.success("Success");
+          router.push("/profile");
         }
       })
       .catch((err) => console.log(err));
@@ -37,17 +38,14 @@ function ChangePin(props) {
 
   return (
     <>
-      <PageTitle title="Change Pin" />
+      <PageTitle title="New Pin" />
 
       <Layout>
         <div className={styles["main-container"]}>
           <div className={styles["header"]}>
             <p className={styles["title"]}>Change Pin</p>
           </div>
-          <p>
-            Enter your current 6 digits Zwallet PIN below to continue to the
-            next steps.
-          </p>
+          <p>Type your new 6 digits security PIN to use in Zwallet.</p>
           <form onSubmit={submitHandler} className={styles["form"]}>
             <ReactCodeInput
               type="password"
@@ -55,16 +53,6 @@ function ChangePin(props) {
               name="pin"
               onChange={formChange}
             />
-            {/* <div className={styles["pin"]}>
-              <input
-                type="password"
-                name="pin"
-                placeholder="6 digits pin"
-                minLength="6"
-                maxLength="6"
-                required
-              ></input>
-            </div> */}
             <button type="submit" className="btn btn-primary">
               Confirm
             </button>
@@ -83,4 +71,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(ChangePin);
+export default connect(mapStateToProps)(NewPin);

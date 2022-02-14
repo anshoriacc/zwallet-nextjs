@@ -24,30 +24,38 @@ import { updateUserData } from "src/redux/actions/user";
 
 function Card({ data }) {
   return (
-    <div className={styles["transaction-item"]}>
-      <div className={styles["left"]}>
-        <div className={styles["img"]}>
-          <Image
-            src={"/images/default.jpg"}
-            placeholder={"empty"}
-            alt="profile"
-            layout="fill"
-            objectFit="cover"
-          />
+    <Link href={`/history/${data.id}`} passHref>
+      <div className={styles["transaction-item"]}>
+        <div className={styles["left"]}>
+          <div className={styles["img"]}>
+            <Image
+              alt="profile"
+              src={
+                data.image
+                  ? `https://zwalet.herokuapp.com/uploads/${data.image}`
+                  : "/images/default.jpg"
+              }
+              placeholder="blur"
+              blurDataURL="/images/default.jpg"
+              onError={() => "/images/default.jpg"}
+              layout="fill"
+              objectFit="contain"
+            />
+          </div>
+          <div className={styles["name-type"]}>
+            <p className={styles["name"]}>{data.fullName}</p>
+            <p className={styles["type"]}>{data.type}</p>
+          </div>
         </div>
-        <div className={styles["name-type"]}>
-          <p className={styles["name"]}>{data.fullName}</p>
-          <p className={styles["type"]}>{data.type}</p>
+        <div
+          className={`${styles["transaction-amount"]} ${
+            data.type === "topup" ? styles["green"] : styles["red"]
+          }`}
+        >
+          {data.type === "topup" ? "+" : "-"}Rp. {currencyPeriod(data.amount)}
         </div>
       </div>
-      <div
-        className={`${styles["transaction-amount"]} ${
-          data.type === "topup" ? styles["green"] : styles["red"]
-        }`}
-      >
-        {data.type === "topup" ? "+" : "-"}Rp. {currencyPeriod(data.amount)}
-      </div>
-    </div>
+    </Link>
   );
 }
 
@@ -277,7 +285,11 @@ function Dashboard(props) {
         <form onSubmit={topUpHandler}>
           <Modal.Body>
             <p>Enter the amount of money, and click submit</p>
-            <input type="text" name="amount"></input>
+            <input
+              className={styles["input-amount"]}
+              type="text"
+              name="amount"
+            ></input>
           </Modal.Body>
           <Modal.Footer>
             <Button type="submit" variant="primary">

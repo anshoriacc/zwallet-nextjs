@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
-import Head from "next/head";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { connect } from "react-redux";
 
 import styles from "src/common/styles/Auth.module.css";
 
@@ -12,7 +12,7 @@ import PageTitle from "src/common/components/PageTitle";
 
 import { register } from "src/modules/api/auth";
 
-export default function Register() {
+function Register(props) {
   const router = useRouter();
   const [passwordShown, setPasswordShown] = useState(false);
 
@@ -40,6 +40,12 @@ export default function Register() {
         console.error(err);
       });
   };
+
+  useEffect(() => {
+    if (props.auth.isFulfilled) {
+      router.push("/dashboard");
+    }
+  }, []);
 
   return (
     <>
@@ -111,3 +117,11 @@ export default function Register() {
     </>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth,
+  };
+};
+
+export default connect(mapStateToProps)(Register);

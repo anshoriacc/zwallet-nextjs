@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 
 import styles from "src/common/styles/History.module.css";
@@ -11,40 +11,53 @@ import PageTitle from "src/common/components/PageTitle";
 
 import { getHistory } from "src/modules/api/history";
 import currencyPeriod from "src/modules/helpers/currencyPeriod";
+import { resetTransferAction } from "src/redux/actions/transfer";
 
 function Card({ data }) {
   return (
-    <div className={styles["transaction-item"]}>
-      <div className={styles["left"]}>
-        <div className={styles["img"]}>
-          <Image
-            src={"/images/default.jpg"}
-            placeholder={"empty"}
-            alt="profile"
-            layout="fill"
-            objectFit="cover"
-          />
+    <Link href={`/history/${data.id}`} passHref>
+      <div className={styles["transaction-item"]}>
+        <div className={styles["left"]}>
+          <div className={styles["img"]}>
+            <Image
+              alt="profile"
+              src={
+                data.image
+                  ? `https://zwalet.herokuapp.com/uploads/${data.image}`
+                  : "/images/default.jpg"
+              }
+              placeholder="blur"
+              blurDataURL="/images/default.jpg"
+              onError={() => "/images/default.jpg"}
+              layout="fill"
+              objectFit="contain"
+            />
+          </div>
+          <div className={styles["name-type"]}>
+            <p className={styles["name"]}>{data.fullName}</p>
+            <p className={styles["type"]}>{data.type}</p>
+          </div>
         </div>
-        <div className={styles["name-type"]}>
-          <p className={styles["name"]}>{data.fullName}</p>
-          <p className={styles["type"]}>{data.type}</p>
+        <div
+          className={`${styles["transaction-amount"]} ${
+            data.type === "topup" || data.type === "accept"
+              ? styles["green"]
+              : styles["red"]
+          }`}
+        >
+          {data.type === "topup" || data.type === "accept" ? "+" : "-"}Rp.{" "}
+          {currencyPeriod(data.amount)}
         </div>
       </div>
-      <div
-        className={`${styles["transaction-amount"]} ${
-          data.type === "topup" || data.type === "accept" ? styles["green"] : styles["red"]
-        }`}
-      >
-        {data.type === "topup" || data.type === "accept" ? "+" : "-"}Rp. {currencyPeriod(data.amount)}
-      </div>
-    </div>
+    </Link>
   );
 }
 
 function History(props) {
+  const dispatch = useDispatch();
+  const router = useRouter();
   const [historyData, setHistoryData] = useState([]);
   const [paginationData, setPaginationData] = useState({});
-  const router = useRouter();
 
   console.log(router);
 
@@ -67,6 +80,10 @@ function History(props) {
         console.log(err);
       });
   }, [filter, page]);
+
+  useEffect(() => {
+    dispatch(resetTransferAction());
+  }, []);
 
   return (
     <>
@@ -131,9 +148,11 @@ function History(props) {
                 if (router.query.filter) {
                   router.push(`${router.asPath}&page=${page + 1}`);
                 }
-                // router.query.filter
-                //   ? router.push(`${router.asPath}&page=${page + 1}`)
-                //   : router.push(`${router.asPath}?page=${page + 1}`);
+                if (router.query.filter && page > 1) {
+                  router.push(
+                    `${router.pathname}?filter=${filter}&page=${page + 1}`
+                  );
+                }
               }}
             >
               <i className="bi bi-chevron-right"></i>
