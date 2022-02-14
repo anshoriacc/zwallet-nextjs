@@ -82,7 +82,7 @@ function Dashboard(props) {
 
   useEffect(() => {
     if (historyData.length === 0) {
-      getHistory(props.token, 5, filter, page)
+      getHistory(props.token, 4, filter, page)
         .then((res) => {
           console.log(res.data.data);
           setHistoryData(res.data.data);
