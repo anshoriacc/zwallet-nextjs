@@ -89,7 +89,7 @@ function Profile(props) {
 
       <Layout>
         <div className={styles["main"]}>
-          <div onClick={showImageModal} className={styles["img"]}>
+          <div onClick={showImageModal} className={styles["img"]} title="edit or delete photo">
             <Image
               alt="profile"
               src={
