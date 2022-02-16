@@ -53,7 +53,7 @@ function Login(props) {
     if (props.auth.isRejected) {
       toast.error("Login error", { autoClose: false });
     }
-  });
+  }, [props.auth]);
 
   return (
     <>
