@@ -1,7 +1,7 @@
 # Zwallet: Money Transfer App With NextJS
 
 <div align="center">
-	<img height="200" src="https://raw.githubusercontent.com/anshoriacc/zwallet-nextjs/blob/main/public/images/github-banner.png" alt="Zwallet">
+	<img height="200" src="https://raw.githubusercontent.com/anshoriacc/zwallet-nextjs/main/public/images/github-banner.png" alt="Zwallet">
 
 [![react-router-dom](https://img.shields.io/npm/v/react-router-dom?label=react-router-dom)](https://www.npmjs.com/package/react-router-dom)
 [![axios](https://img.shields.io/npm/v/axios?label=axios)](https://www.npmjs.com/package/axios)
@@ -85,11 +85,11 @@ You may also see any lint errors in the console.
 ## Screenshots
 
 <div align="center">
-<img width="500" src="https://github.com/anshoriacc/zwallet-nextjs/blob/main/public/images/ss1.png" alt="Landing page">
+<img width="500" src="https://raw.githubusercontent.com/anshoriacc/zwallet-nextjs/main/public/images/ss1.png" alt="Landing page">
 
-<img width="500" src="https://github.com/anshoriacc/zwallet-nextjs/blob/main/public/images/ss2.png" alt="Login page">
+<img width="500" src="https://raw.githubusercontent.com/anshoriacc/zwallet-nextjs/main/public/images/ss2.png" alt="Login page">
 
-<img width="500" src="https://github.com/anshoriacc/zwallet-nextjs/blob/main/public/images/ss3.png" alt="Dashboard">
+<img width="500" src="https://raw.githubusercontent.com/anshoriacc/zwallet-nextjs/main/public/images/ss3.png" alt="Dashboard">
 
-<img width="500" src="https://github.com/anshoriacc/zwallet-nextjs/blob/main/public/images/ss4.png" alt="Transfer history">
+<img width="500" src="https://raw.githubusercontent.com/anshoriacc/zwallet-nextjs/main/public/images/ss4.png" alt="Transfer history">
 </div>
