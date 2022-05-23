@@ -85,15 +85,11 @@ You may also see any lint errors in the console.
 ## Screenshots
 
 <div align="center">
-<img width="500" src="https://raw.githubusercontent.com/anshoriacc/violet-coffee-shop-frontend/master/public/github-ss1.png" alt="Home page">
+<img width="500" src="https://github.com/anshoriacc/zwallet-nextjs/tree/main/public/images/ss1.png" alt="Landing page">
 
-<img width="500" src="https://raw.githubusercontent.com/anshoriacc/violet-coffee-shop-frontend/master/public/github-ss2.png" alt="Login page">
+<img width="500" src="https://github.com/anshoriacc/zwallet-nextjs/tree/main/public/images/ss2.png" alt="Login page">
+
+<img width="500" src="https://github.com/anshoriacc/zwallet-nextjs/tree/main/public/images/ss3.png" alt="Dashboard">
+
+<img width="500" src="https://github.com/anshoriacc/zwallet-nextjs/tree/main/public/images/ss4.png" alt="Transfer history">
 </div>
-
-## Related Projects
-
-[Violet Coffee Shop - Backend](https://github.com/anshoriacc/violet-coffee-shop-backend)
-
-## Contributors
-
-This project created with ReactJS by [Achmad Anshori](https://github.com/anshoriacc), [Fahrul Muhammad](https://github.com/fahrul-muhammad), [Tri Sumanzaya](https://github.com/Trisumanzaya93), [Fajar Pratama Vhishinggah](https://github.com/ikehikeh151), [Hazpi Nurafgan](https://github.com/Hazgn).
