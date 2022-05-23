@@ -1,7 +1,7 @@
 # Zwallet: Money Transfer App With NextJS
 
 <div align="center">
-	<img height="200" src="https://raw.githubusercontent.com/anshoriacc/violet-coffee-shop-backend/master/public/github-banner.png" alt="VioletCoffeeShop">
+	<img height="200" src="https://raw.githubusercontent.com/anshoriacc/zwallet-nextjs/blob/main/public/images/github-banner.png" alt="Zwallet">
 
 [![react-router-dom](https://img.shields.io/npm/v/react-router-dom?label=react-router-dom)](https://www.npmjs.com/package/react-router-dom)
 [![axios](https://img.shields.io/npm/v/axios?label=axios)](https://www.npmjs.com/package/axios)
