@@ -1,24 +1,25 @@
-import Head from "next/head";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { connect, useDispatch } from "react-redux";
-import { useRouter } from "next/router";
-import { toast } from "react-toastify";
+import Head from 'next/head';
+import Link from 'next/link';
+import {useEffect, useState} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+import {useRouter} from 'next/router';
+import {toast} from 'react-toastify';
 
-import styles from "src/common/styles/Auth.module.css";
+import styles from 'src/common/styles/Auth.module.css';
 
-import Layout from "src/common/components/LayoutAuth";
-import PageTitle from "src/common/components/PageTitle";
+import Layout from 'src/common/components/LayoutAuth';
+import PageTitle from 'src/common/components/PageTitle';
 
-import { loginAction } from "src/redux/actions/auth";
-import { updateUserData, userDataAction } from "src/redux/actions/user";
-import { getDetailUser } from "src/modules/api/user";
+import {loginAction} from 'src/redux/actions/auth';
+import {updateUserData, userDataAction} from 'src/redux/actions/user';
+import {getDetailUser} from 'src/modules/api/user';
 
-function Login(props) {
+export default function Login(props) {
   const router = useRouter();
   const dispatch = useDispatch();
   const [passwordShown, setPasswordShown] = useState(false);
   const [value, setValue] = useState(false);
+  const auth = useSelector((state) => state.auth);
 
   const togglePassword = () => {
     setPasswordShown(!passwordShown);
@@ -40,37 +41,37 @@ function Login(props) {
   };
 
   useEffect(() => {
-    if (props.auth.isFulfilled) {
-      toast.success("Login success, redirecting to dashboard.");
-      getDetailUser(props.auth.userData.token, props.auth.userData.id)
+    if (auth.isFulfilled) {
+      toast.success('Login success, redirecting to dashboard.');
+      getDetailUser(auth.userData.token, auth.userData.id)
         .then((res) => {
           dispatch(updateUserData(res.data.data));
         })
         .catch((err) => console.log(err));
-      if (!props.auth.userData.pin) router.push("/createpin");
-      if (props.auth.userData.pin) router.push("/dashboard");
+      if (!auth.userData.pin) router.push('/createpin');
+      if (auth.userData.pin) router.push('/dashboard');
     }
-    if (props.auth.isRejected) {
-      toast.error("Login error", { autoClose: false });
+    if (auth.isRejected) {
+      toast.error('Login error', {autoClose: false});
     }
-  }, [props.auth]);
+  }, [auth]);
 
   return (
     <>
       <PageTitle title="Login" />
 
       <Layout>
-        <h2 className={styles["h2"]}>
+        <h2 className={styles['h2']}>
           Start Accessing Banking Needs With All Devices and All Platforms With
           30.000+ Users
         </h2>
-        <p className={styles["description"]}>
+        <p className={styles['description']}>
           Transfering money is eassier than ever, you can access Zwallet
           wherever you are. Desktop, laptop, mobile phone? we cover all of that
           for you!
         </p>
-        <form className={styles["form"]} onSubmit={loginHandler}>
-          <div className={styles["email"]}>
+        <form className={styles['form']} onSubmit={loginHandler}>
+          <div className={styles['email']}>
             <i className="bi bi-envelope"></i>
             <input
               type="email"
@@ -80,10 +81,10 @@ function Login(props) {
               onChange={handleChange}
             ></input>
           </div>
-          <div className={styles["password"]}>
+          <div className={styles['password']}>
             <i className="bi bi-lock"></i>
             <input
-              type={passwordShown ? "text" : "password"}
+              type={passwordShown ? 'text' : 'password'}
               name="password"
               placeholder="Enter your password"
               required
@@ -91,11 +92,11 @@ function Login(props) {
             ></input>
             <i
               className={`bi ${passwordShown ? `bi-eye-slash` : `bi-eye`} 
-            ${styles["toggle-password"]}`}
+            ${styles['toggle-password']}`}
               onClick={togglePassword}
             ></i>
           </div>
-          <div className={styles["link-forgot"]}>
+          <div className={styles['link-forgot']}>
             <Link href="/forgot" passHref>
               <a>Forgot password?</a>
             </Link>
@@ -103,8 +104,8 @@ function Login(props) {
           <button type="submit" className="btn btn-primary">
             Login
           </button>
-          <div className={styles["link-blue"]}>
-            Don’t have an account? Let’s{"  "}
+          <div className={styles['link-blue']}>
+            Don’t have an account? Let’s{'  '}
             <Link href="/register">
               <a>Register</a>
             </Link>
@@ -115,10 +116,8 @@ function Login(props) {
   );
 }
 
-const mapStateToProps = (state) => {
+export async function getStaticProps(context) {
   return {
-    auth: state.auth,
+    props: {},
   };
-};
-
-export default connect(mapStateToProps)(Login);
+}

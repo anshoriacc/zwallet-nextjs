@@ -1,22 +1,23 @@
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import Image from "next/image";
-import { connect, useDispatch } from "react-redux";
+import Link from 'next/link';
+import {useEffect, useState} from 'react';
+import {useRouter} from 'next/router';
+import Image from 'next/image';
+import {connect, useDispatch} from 'react-redux';
 
-import styles from "src/common/styles/Transfer.module.css";
+import styles from 'src/common/styles/Transfer.module.css';
 
-import Layout from "src/common/components/LayoutLoggedIn";
-import PageTitle from "src/common/components/PageTitle";
+import Layout from 'src/common/components/LayoutLoggedIn';
+import PageTitle from 'src/common/components/PageTitle';
 
-import { getDetailUser } from "src/modules/api/user";
-import { inputTransferData } from "src/redux/actions/transfer";
-import currencyPeriod from "src/modules/helpers/currencyPeriod";
+import {getDetailUser} from 'src/modules/api/user';
+import {inputTransferData} from 'src/redux/actions/transfer';
+import currencyPeriod from 'src/modules/helpers/currencyPeriod';
 
 function TransferAmount(props) {
   const router = useRouter();
-  const [receiverData, setReceiverData] = useState({});
   const dispatch = useDispatch();
+  const [receiverData, setReceiverData] = useState({});
+  const [amount, setAmount] = useState(0);
   const receiverId = router.query.receiver;
 
   useEffect(() => {
@@ -28,20 +29,20 @@ function TransferAmount(props) {
       .catch((err) => {
         console.log(err);
       });
-  });
+  }, [props.token, receiverId]);
 
   const submitHandler = (e) => {
     e.preventDefault();
     const date = new Date();
     const data = {
       receiverId: receiverId,
-      amount: e.target.amount.value,
+      amount: amount,
       notes: e.target.notes.value,
       date,
       receiverData,
     };
     dispatch(inputTransferData(data));
-    router.push("/transfer/confirmation");
+    router.push('/transfer/confirmation');
   };
 
   return (
@@ -49,44 +50,41 @@ function TransferAmount(props) {
       <PageTitle title="Transfer Amount" />
 
       <Layout>
-        <div className={styles["main"]}>
-          <div className={styles["content"]}>
-            <p className={styles["title"]}>Transfer Money</p>
-            <div className={styles["contact-item"]}>
-              <div className={styles["img"]}>
+        <div className={styles['main']}>
+          <div className={styles['content']}>
+            <p className={styles['title']}>Transfer Money</p>
+            <div className={styles['contact-item']}>
+              <div className={styles['img']}>
                 <Image
-                  src={"/images/default.jpg"}
-                  placeholder={"empty"}
+                  src={'/images/default.jpg'}
+                  placeholder={'empty'}
                   alt="profile"
                   layout="fill"
                   objectFit="cover"
                 />
               </div>
-              <div className={styles["name-phone"]}>
+              <div className={styles['name-phone']}>
                 <p
-                  className={styles["name"]}
+                  className={styles['name']}
                 >{`${receiverData.firstName} ${receiverData.lastName}`}</p>
-                <p className={styles["phone"]}>{receiverData.noTelp | "-"}</p>
+                <p className={styles['phone']}>{receiverData.noTelp | '-'}</p>
               </div>
             </div>
-
-            {/* <Card /> */}
-            {/* {receiverData &&
-                r.map((data, idx) => <Card data={data} key={idx} />)} */}
           </div>
-          <form onSubmit={submitHandler} className={styles["form"]}>
-            <p className={styles["text"]}>
+          <form onSubmit={submitHandler} className={styles['form']}>
+            <p className={styles['text']}>
               Type the amount you want to transfer and then press continue to
               the next steps.
             </p>
             <input
-              type="number"
+              type="text"
               name="amount"
-              placeholder="0.00"
+              placeholder="Rp. 0.00"
               autoComplete="off"
-              className={styles["input-amount"]}
+              className={styles['input-amount']}
+              onChange={(e) => setAmount(e.target.value)}
             ></input>
-            <p className={styles["balance"]}>{`Rp. ${currencyPeriod(
+            <p className={styles['balance']}>{`Rp. ${currencyPeriod(
               props.userData.balance
             )} available`}</p>
             <input
@@ -94,9 +92,12 @@ function TransferAmount(props) {
               name="notes"
               placeholder="Add some notes."
               autoComplete="off"
-              className={styles["input-notes"]}
+              className={styles['input-notes']}
             ></input>
-            <button type="submit" className={`btn btn-primary ${styles["confirm"]}`}>
+            <button
+              type="submit"
+              className={`btn btn-primary ${styles['confirm']}`}
+            >
               Continue
             </button>
           </form>

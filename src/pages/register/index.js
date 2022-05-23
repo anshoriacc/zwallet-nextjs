@@ -1,20 +1,21 @@
-import { useRouter } from "next/router";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { connect } from "react-redux";
+import {useRouter} from 'next/router';
+import Link from 'next/link';
+import {useEffect, useState} from 'react';
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {useSelector} from 'react-redux';
 
-import styles from "src/common/styles/Auth.module.css";
+import styles from 'src/common/styles/Auth.module.css';
 
-import Layout from "src/common/components/LayoutAuth";
-import PageTitle from "src/common/components/PageTitle";
+import Layout from 'src/common/components/LayoutAuth';
+import PageTitle from 'src/common/components/PageTitle';
 
-import { register } from "src/modules/api/auth";
+import {register} from 'src/modules/api/auth';
 
-function Register(props) {
+export default function Register(props) {
   const router = useRouter();
   const [passwordShown, setPasswordShown] = useState(false);
+  const auth = useSelector((state) => state.auth);
 
   const togglePassword = () => {
     setPasswordShown(!passwordShown);
@@ -32,37 +33,36 @@ function Register(props) {
     register(body)
       .then((response) => {
         // console.log(response);
-        toast.success("Register success, redirecting to login page.");
-        router.push("/login");
+        toast.success('Register success, redirecting to login page.');
+        router.push('/login');
       })
       .catch((err) => {
-        toast.success("Register error", { autoClose: false });
+        toast.success('Register error', {autoClose: false});
         console.error(err);
       });
   };
 
   useEffect(() => {
-    if (props.auth.isFulfilled) {
-      router.push("/dashboard");
+    if (auth.isFulfilled) {
+      router.push('/dashboard');
     }
-  }, []);
+  }, [auth]);
 
   return (
     <>
       <PageTitle title="Register" />
 
       <Layout>
-        <h2 className={styles["h2"]}>
+        <h2 className={styles['h2']}>
           Start Accessing Banking Needs With All Devices and All Platforms With
           30.000+ Users
         </h2>
-        <p className={styles["description"]}>
-          Transfering money is eassier than ever, you can access Zwallet
-          wherever you are. Desktop, laptop, mobile phone? we cover all of that
-          for you!
+        <p className={styles['description']}>
+          Transfering money is easier than ever, you can access Zwallet wherever
+          you are. Desktop, laptop, mobile phone? we cover all of that for you!
         </p>
-        <form className={styles["form"]} onSubmit={registerHandler}>
-          <div className={styles["fname"]}>
+        <form className={styles['form']} onSubmit={registerHandler}>
+          <div className={styles['fname']}>
             <i className="bi bi-person"></i>
             <input
               type="text"
@@ -71,7 +71,7 @@ function Register(props) {
               required
             ></input>
           </div>
-          <div className={styles["lname"]}>
+          <div className={styles['lname']}>
             <i className="bi bi-person"></i>
             <input
               type="text"
@@ -80,7 +80,7 @@ function Register(props) {
               required
             ></input>
           </div>
-          <div className={styles["email"]}>
+          <div className={styles['email']}>
             <i className="bi bi-envelope"></i>
             <input
               type="email"
@@ -89,25 +89,25 @@ function Register(props) {
               required
             ></input>
           </div>
-          <div className={styles["password"]}>
+          <div className={styles['password']}>
             <i className="bi bi-lock"></i>
             <input
-              type={passwordShown ? "text" : "password"}
+              type={passwordShown ? 'text' : 'password'}
               name="password"
               placeholder="Enter your password"
               required
             ></input>
             <i
               className={`bi ${passwordShown ? `bi-eye-slash` : `bi-eye`} 
-            ${styles["toggle-password"]}`}
+            ${styles['toggle-password']}`}
               onClick={togglePassword}
             ></i>
           </div>
           <button type="submit" className="btn btn-primary">
             Register
           </button>
-          <div className={styles["link-blue"]}>
-            Already have an account? Let’s{"  "}
+          <div className={styles['link-blue']}>
+            Already have an account? Let’s{'  '}
             <Link href="/login">
               <a>Login</a>
             </Link>
@@ -118,10 +118,8 @@ function Register(props) {
   );
 }
 
-const mapStateToProps = (state) => {
+export async function getStaticProps(context) {
   return {
-    auth: state.auth,
+    props: {},
   };
-};
-
-export default connect(mapStateToProps)(Register);
+}

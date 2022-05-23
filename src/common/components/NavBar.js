@@ -1,58 +1,48 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
-import Image from "next/image";
-import { connect, useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
+import Link from 'next/link';
+import {useRouter} from 'next/router';
+import Image from 'next/image';
+import {connect, useSelector} from 'react-redux';
+import {useEffect, useState} from 'react';
 
-import styles from "src/common/styles/NavBar.module.css";
+import styles from 'src/common/styles/NavBar.module.css';
 
-import { getDetailUser } from "src/modules/api/user";
+import {getDetailUser} from 'src/modules/api/user';
 
 const NavBar = (props) => {
   const router = useRouter();
-  // const dispatch = useDispatch();
-  const [userData, setUserData] = useState({});
-
-  // useEffect(() => {
-  //   getDetailUser(auth.userData.token, auth.userData.id)
-  //     .then((res) => {
-  //       const resdata = res.data.data;
-  //       setUserData({ ...userData, resdata });
-  //     })
-  //     .catch((err) => console.log(err));
-  // }, [auth.userData.token]);
+  const userData = useSelector((state) => state.auth.userData);
 
   return (
-    <nav className={`${styles["navbar"]} `}>
+    <nav className={`${styles['navbar']} `}>
       <Link href="/dashboard" passHref>
         Zwallet
       </Link>
-      <div className={styles["nav-right"]}>
+      <div className={styles['nav-right']}>
         <Link href="/profile" passHref>
-          <div className={styles["profile"]}>
-            <div className={styles["img"]}>
+          <div className={styles['profile']}>
+            <div className={styles['img']}>
               <Image
                 alt="profile"
                 src={
                   props.userData.image
                     ? `https://zwalet.herokuapp.com/uploads/${props.userData.image}`
-                    : "/images/default.jpg"
+                    : '/images/default.jpg'
                 }
                 placeholder="blur"
                 blurDataURL="/images/default.jpg"
-                onError={() => "/images/default.jpg"}
+                onError={() => '/images/default.jpg'}
                 layout="fill"
                 objectFit="cover"
               />
             </div>
             <div>
               <p
-                className={styles["name"]}
+                className={styles['name']}
               >{`${props.userData.firstName} ${props.userData.lastName}`}</p>
-              <p className={styles["phone"]}>{props.userData.noTelp || "-"}</p>
+              <p className={styles['phone']}>{props.userData.noTelp || '-'}</p>
             </div>
-            <div className={styles["notification-wrapper"]}>
-              <div className={styles["notification"]}></div>
+            <div className={styles['notification-wrapper']}>
+              <div className={styles['notification']}></div>
             </div>
           </div>
         </Link>
